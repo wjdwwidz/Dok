@@ -34,6 +34,9 @@
   "paths": {
     "/ping": {
       "get": {
+        "tags": [
+          "ping-pong"
+        ],
         "description": "",
         "responses": {
           "200": {
@@ -88,49 +91,13 @@
     "User": {
       "type": "object",
       "properties": {
-        "name": {
+        "id": {
           "type": "string",
-          "example": "Jhon Doe"
+          "example": "char"
         },
-        "age": {
-          "type": "number",
-          "example": 29
-        },
-        "parents": {
-          "$ref": "#/definitions/Parents"
-        },
-        "diplomas": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "school": {
-                "type": "string",
-                "example": "XYZ University"
-              },
-              "year": {
-                "type": "number",
-                "example": 2020
-              },
-              "completed": {
-                "type": "boolean",
-                "example": true
-              },
-              "internship": {
-                "type": "object",
-                "properties": {
-                  "hours": {
-                    "type": "number",
-                    "example": 290
-                  },
-                  "location": {
-                    "type": "string",
-                    "example": "XYZ Company"
-                  }
-                }
-              }
-            }
-          }
+        "password": {
+          "type": "string",
+          "example": "chatpass"
         }
       }
     },

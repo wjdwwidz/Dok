@@ -6,6 +6,11 @@ async function getTask(taskId) {
     return data;
 }
 
+
+// async function getTask(taskId) {
+//    return findTask(taskId);
+// }
+
 async function createTask(taskData) {
     task = {
         id : taskData.id,
@@ -13,5 +18,12 @@ async function createTask(taskData) {
     }
     taskMap.put(task)
 }
+
+// function findTask(callback, taskId) {
+//     setTimeout(() => {
+//         const data = taskMap.get(taskId)
+//         callback(data);
+//     }, 100);
+// }
 
 module.exports = { getTask, createTask };

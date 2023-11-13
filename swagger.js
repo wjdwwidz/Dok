@@ -26,29 +26,34 @@ const doc = {
             description: "any description..."
         }
     },
-    definitions: {
+    definitions: { //모델정의
         Parents: {
             father: "Simon Doe",
             mother: "Marie Doe"
         },
-        User: {
-            name: "Jhon Doe",
-            age: 29,
-            parents: {
-                $ref: '#/definitions/Parents'
-            },
-            diplomas: [
-                {
-                    school: "XYZ University",
-                    year: 2020,
-                    completed: true,
-                    internship: {
-                        hours: 290,
-                        location: "XYZ Company"
-                    }
-                }
-            ]
+        User : {
+            id : "char",
+            password : "chatpass"
+          
         },
+        // User: {
+        //     name: "Jhon Doe",
+        //     age: 29,
+        //     parents: {
+        //         $ref: '#/definitions/Parents'
+        //     },
+        //     diplomas: [
+        //         {
+        //             school: "XYZ University",
+        //             year: 2020,
+        //             completed: true,
+        //             internship: {
+        //                 hours: 290,
+        //                 location: "XYZ Company"
+        //             }
+        //         }
+        //     ]
+        // },
         AddUser: {
             $name: "Jhon Doe",
             $age: 29,
@@ -56,6 +61,8 @@ const doc = {
         }
     }
 }
+
+
 
 const outputFile = './swagger-output.json'
 const endpointsFiles = ['./src/app.js']

@@ -2,7 +2,6 @@ const taskService = require("../services/TaskService");
 
 async function get(req, res) {
     const taskId = req.params;
-    // console.log(req.params)
     await taskService.getTask(taskId);
 
 }
