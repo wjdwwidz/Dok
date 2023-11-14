@@ -32,12 +32,43 @@
     "application/json"
   ],
   "paths": {
+    "/community": {
+      "get": {
+        "tags": [
+          "community"
+        ],
+        "summary": "산책 매칭글 리스트 페이지",
+        "description": "",
+        "parameters": [
+          {
+            "name": "community_name",
+            "in": "header",
+            "description": "params desc",
+            "type": "boolean"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/ping": {
       "get": {
         "tags": [
           "ping-pong"
         ],
-        "description": "",
+        "summary": "어디에 무슨 설명을 쓰겠다는 거에요 이거에요 (summary)?",
+        "description": "이거에요? (desc)",
+        "parameters": [
+          {
+            "name": "category_name",
+            "in": "header",
+            "description": "params desc",
+            "type": "boolean"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
