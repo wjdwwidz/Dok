@@ -4,7 +4,7 @@ module.exports = {
         "commonjs": true,
         "es2021": true
     },
-    "extends": "standard-with-typescript",
+    "extends": ['airbnb-base', 'prettier'],
     "overrides": [
         {
             "env": {
