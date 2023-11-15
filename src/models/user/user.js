@@ -35,19 +35,12 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
     },
-    created_at: {
-        type: Date,
-        default: Date.now,
     },
-    updated_at: {
-        type: Date,
-        default: Date.now,
-    },
-    deleted_at: {
-        type: Date,
-        default: null,
-    },
-});
+    {
+        timestamps: true,
+    }
+    
+);
 
 const User = model('User', userSchema);
 
