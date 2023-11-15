@@ -5,11 +5,11 @@ const certificationSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  matching_post: {
+  matchingPost: {
     type: Schema.Types.ObjectId,
     ref: "MatchingPost",
   },
-  certification_img: [],
+  certificationImg: [],
   sublocation: {
     type: String,
   },
@@ -18,7 +18,7 @@ const certificationSchema = new Schema({
     ref: "CertificationPostReview",
   },
   // 인증글 작성시간
-  created_at: {
+  createdAt: {
     type: Date,
   },
   updatedAt: {
