@@ -12,19 +12,15 @@ const certificationReviewSchema = new Schema({
   review_text: {
     type: String,
   },
-  // 인증글 작성시간
-  created_at: {
-    type: Date,
-  },
-  updatedAt: {
-    type: Date,
-    default: null,
-  },
+  // 인증글 삭제시간
   deletedAt: {
     type: Date,
     default: null,
   },
 });
+
+// createdAt, updatedAt 자동 설정
+certificationReviewSchema.set("timestamps", true);
 // 모델 생성
 const CertificationReview = mongoose.model(
   "CertificationReview",

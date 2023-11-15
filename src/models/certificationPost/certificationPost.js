@@ -17,19 +17,14 @@ const certificationSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "CertificationPostReview",
   },
-  // 인증글 작성시간
-  createdAt: {
-    type: Date,
-  },
-  updatedAt: {
-    type: Date,
-    default: null,
-  },
+  // 인증글 삭제시간
   deletedAt: {
     type: Date,
     default: null,
   },
 });
+// createdAt, updatedAt 자동 설정
+certificationSchema.set("timestamps", true);
 // 모델 생성
 const Certification = mongoose.model("Certification", certificationSchema);
 // 모델 export
