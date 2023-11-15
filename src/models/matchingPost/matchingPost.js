@@ -1,10 +1,6 @@
 const { Schema } = require('mongoose');
-const User = require('./user');
-const User_dog = require('./user_dog');
-const Matching_handler_request = require('./matchingHandlerRequest');
-const Matching_post_comment = require('./MatchingPostComment');
 
-const ProductSchema = new Schema(
+const MatchingPostSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -64,4 +60,7 @@ const ProductSchema = new Schema(
   },
 );
 
-module.exports = matchingPostSchema;
+// 모델 생성
+const MatchingPost = mongoose.model('MatchingPost', MatchingPostSchema);
+
+module.exports = MatchingPost;
