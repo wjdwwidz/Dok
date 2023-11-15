@@ -28,20 +28,22 @@ const userSchema = new Schema({
         required: true,
     },
     introduce: {
-        type: Object,
+        type: String,
         required: false,
     },
     isCertificated: {
         type: Boolean,
         default: false,
     },
+    deletedAt: {
+        type: Date,
+        default: null,
     },
-    {
-        timestamps: true,
-    }
-    
+    }   
 );
 
+
+userSchema.set("timestamps", true);
 const User = model('User', userSchema);
 
 module.exports = User;
