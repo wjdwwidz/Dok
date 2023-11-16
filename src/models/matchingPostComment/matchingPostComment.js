@@ -1,6 +1,6 @@
 const { Schema } = require('mongoose');
 
-const matchingPostCommentSchema = new Schema(
+const MatchingPostCommentSchema = new Schema(
   {
     matchingPostId: {
       type: Schema.Types.ObjectId,
@@ -34,9 +34,9 @@ const matchingPostCommentSchema = new Schema(
 );
 
 // 모델 생성
-const matchingPostComment = mongoose.model(
+const MatchingPostComment = mongoose.model(
   'matchingPostComment',
   matchingPostCommentSchema,
 );
 
-module.exports = matchingPostComment;
+module.exports = MatchingPostComment;
