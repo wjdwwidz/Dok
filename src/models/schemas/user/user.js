@@ -21,11 +21,11 @@ const userSchema = new Schema({
   },
   address: {
     type: String,
-    required: false, // 기본값이 false
+    required: true,
   },
   phoneNumber: {
     type: String,
-    required: false,
+    required: true,
   },
   introduce: {
     type: String,
@@ -42,6 +42,5 @@ const userSchema = new Schema({
 });
 
 userSchema.set('timestamps', true);
-const User = model('User', userSchema);
 
-module.exports = User;
+module.exports = userSchema;
