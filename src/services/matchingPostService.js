@@ -1,10 +1,8 @@
-const { MatchingPost } = require('../models/matchingPost/matchingPost');
-const {
-  MatchingPostComment,
-} = require('../models/matchingPostComment/matchingPostComment');
+const { MatchingPost } = require('../models/schemas/matchingPost/matchingPost');
+const { MatchingPostComment } = require('../models');
 const {
   MatchingHandlerRequest,
-} = require('../models/matchingHandlerRequest/matchingHandlerRequest');
+} = require('../models/schemas/matchingHandlerRequest/matchingHandlerRequest');
 
 class MatchingPostService {
   //전체 매칭 글 가져오기
@@ -16,11 +14,10 @@ class MatchingPostService {
     return findPost;
   }
 
-  // 댓글 가져오기 , 댓글을 가져올 때 부모 comment가 있는지 부터 검사할것
-  //부모 comment가 있으면? ???
-  getAllComments(matchingPost_id) {
+  // 댓글 가져오기
+  getAllComments(data) {
     const findComments = MatchingPostComment.find({
-      matching_post_id: matchingPost_id,
+      matching_post_id: data,
     }).populate('user');
 
     return findComments;
@@ -29,6 +26,26 @@ class MatchingPostService {
   //댓글 작성하기
   postComment(data) {
     const postComment = MatchingPostComment.create(data);
+    return postComment;
+  }
+
+  //댓글 수정하기 댓글의 id값으로 찾은 후 update
+  postComment(data, comment_data) {
+    const postComment = MatchingPostComment.findOneAndUpdate(
+      { _id: data },
+      {
+        comment: comment_data,
+      },
+    );
+    return postComment;
+  }
+
+  //댓글 삭제하기(댓글 진짜 삭제x -> deleted_at 찍히게)
+  async postComment(data) {
+    const postComment = await MatchingPostComment.findOneAndUpdate(
+      { _id: order_id },
+      { deleted_at: new Date() },
+    );
     return postComment;
   }
 

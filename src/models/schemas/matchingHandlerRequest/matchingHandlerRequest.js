@@ -1,14 +1,15 @@
+const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
-const MatchingPostCommentSchema = new Schema(
+const MatchingHandlerRequestSchema = new Schema(
   {
-    matchingPostId: {
+    matching_post_id: {
       type: Schema.Types.ObjectId,
       ref: 'MatchingPost',
       required: true,
     },
 
-    user: {
+    user_dog: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
@@ -19,9 +20,8 @@ const MatchingPostCommentSchema = new Schema(
       required: true,
     },
 
-    parentCommentId: {
+    parent_comment_id: {
       type: String,
-      required: true,
     },
 
     deleted_at: {
@@ -34,9 +34,9 @@ const MatchingPostCommentSchema = new Schema(
 );
 
 // 모델 생성
-const MatchingPostComment = mongoose.model(
-  'matchingPostComment',
-  matchingPostCommentSchema,
+const MatchingHandlerRequest = mongoose.model(
+  'MatchingHandlerRequest',
+  MatchingHandlerRequestSchema,
 );
 
-module.exports = MatchingPostComment;
+module.exports = MatchingHandlerRequest;

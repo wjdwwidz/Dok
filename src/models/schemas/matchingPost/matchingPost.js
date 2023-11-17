@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
 const MatchingPostSchema = new Schema(
@@ -32,7 +33,7 @@ const MatchingPostSchema = new Schema(
     },
 
     location: {
-      type: char,
+      type: String,
       required: true,
     },
 
@@ -60,7 +61,4 @@ const MatchingPostSchema = new Schema(
   },
 );
 
-// 모델 생성
-const MatchingPost = mongoose.model('MatchingPost', MatchingPostSchema);
-
-module.exports = MatchingPost;
+module.exports = MatchingPostSchema;
