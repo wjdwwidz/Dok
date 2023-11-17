@@ -1,7 +1,10 @@
 const { MatchingPost } = require('../models/matchingPost/matchingPost');
 const {
+  MatchingPostComment,
+} = require('../models/matchingPostComment/matchingPostComment');
+const {
   MatchingHandlerRequest,
-} = require('../models/matchingPost/matchingHandlerRequest');
+} = require('../models/matchingHandlerRequest/matchingHandlerRequest');
 
 class MatchingPostService {
   //전체 매칭 글 가져오기
