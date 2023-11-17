@@ -2,8 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('../swagger-output.json');
-const cors = require('cors');
+
 require('dotenv').config();
+// const cors = require('cors');
 
 const dbFill = require('./dbFill.js');
 
@@ -21,7 +22,6 @@ mongoose
   });
 
 app.use(cors());
-app.use(express.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
