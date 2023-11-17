@@ -21,11 +21,11 @@ const userSchema = new Schema({
   },
   address: {
     type: String,
-    required: true,
+    required: false, // 기본값이 false
   },
   phoneNumber: {
     type: String,
-    required: true,
+    required: false,
   },
   introduce: {
     type: String,
