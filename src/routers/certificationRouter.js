@@ -1,9 +1,16 @@
 const { Router } = require("express");
 const {
-  CertificationPost,
-} = require("../models/certicationPost/certicationPost");
+  getCertificationPosts,
+  getCertificationPostDetail,
+} = require("../controllers/certificationPostController");
 
-const certificationPost = Router();
+const router = Router();
 
 // 인증글 생성
-certificationPost.post("/", async (req, res, next) => {});
+router.post("/api/certificationPostList", getCertificationPosts);
+// 전체 인증글 조회
+router.get("/api/certificationPostList", getCertificationPosts);
+// 상세 인증글 조회
+router.get("/api/certificationPostList", getCertificationPostDetail);
+
+module.exports = router;
