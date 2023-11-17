@@ -1,23 +1,21 @@
-const userDao = require("../models/user/userDao");
+const User = require("../models/user/user");
 
-const signUp = async (userId, password) => {
+async function createUser(userRequest) {
   try {
-    //Validation required
-    const createUser = await userDao.createUser(userId, password);
-    return createUser;
+    const user = new User({
+      //mongoose dao 역할 이자 모델
+      userId: userRequest.getUserId(),
+      password: userRequest.getPassword(),
+      name: userRequest.getName(),
+      nickname: userRequest.getNickname(),
+    });
+
+    await user.save();
+    return user;
   } catch (error) {
     console.error(error);
     throw error;
   }
-};
+}
 
-// const getUserById = async (userId) => {
-//   try {
-//     const user = await User.findById(userId);
-//     return user;
-//   } catch (error) {
-//     throw error;
-//   }
-// };
-
-module.exports = { signUp };
+module.exports = { createUser };
