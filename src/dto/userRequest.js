@@ -1,12 +1,14 @@
+const falsey = require('falsey');
+
 class UserRequest {
   constructor(userId, password, name, nickname) {
     if (
-      userId === (null || undefined) ||
-      password === (null || undefined) ||
-      name === (null || undefined) ||
-      nickname === (null || undefined)
+      falsey(userId) ||
+      falsey(password) ||
+      falsey(name) ||
+      falsey(nickname)
     ) {
-      throw new Error("Invalid UserRequest");
+      throw new Error('Invalid UserRequest');
     }
     this.userId = userId;
     this.password = password;
