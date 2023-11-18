@@ -11,7 +11,7 @@ async function signUp(req, res) {
     res.status(201).json(user);
   } catch (error) {
     //todo
-    res.status(505).json('error');
+    res.status(error.getStatusCode()).json(error.getMessage());
   }
 }
 
