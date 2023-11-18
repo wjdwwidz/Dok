@@ -5,26 +5,7 @@ const { BadRequestError } = require('../errors/badReqestError');
  */
 class UserRequest {
   constructor(userId, password, name, nickname) {
-    if (
-      falsey(userId) ||
-      falsey(password) ||
-      falsey(name) ||
-      falsey(nickname)
-    ) {
-      throw new BadRequestError(
-        `필수 데이터가 없습니다. userId: ${userId}, password: ${password}, name: ${name}, nickname: ${nickname}`,
-      );
-    }
-
-    if (password.length < 8) {
-      throw new BadRequestError('비밀번호는 8자리 이상이어야 합니다.');
-    }
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).*$/;
-    if (!regex.test(password)) {
-      throw new BadRequestError(
-        '비밀번호는 영문 대문자, 소문자, 숫자, 특수문자를 모두 포함해야 합니다.',
-      );
-    }
+    this.validate(userId, password, name, nickname);
 
     this.userId = userId;
     this.password = password;
@@ -47,6 +28,29 @@ class UserRequest {
 
   getNickname() {
     return this.nickname;
+  }
+
+  validate(userId, password, name, nickname) {
+    if (
+      falsey(userId) ||
+      falsey(password) ||
+      falsey(name) ||
+      falsey(nickname)
+    ) {
+      throw new BadRequestError(
+        `필수 데이터가 없습니다. userId: ${userId}, password: ${password}, name: ${name}, nickname: ${nickname}`,
+      );
+    }
+
+    if (password.length < 8) {
+      throw new BadRequestError('비밀번호는 8자리 이상이어야 합니다.');
+    }
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).*$/;
+    if (!regex.test(password)) {
+      throw new BadRequestError(
+        '비밀번호는 영문 대문자, 소문자, 숫자, 특수문자를 모두 포함해야 합니다.',
+      );
+    }
   }
 }
 
