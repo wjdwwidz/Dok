@@ -1,5 +1,5 @@
-const userService = require("../services/userService");
-const UserRequest = require("../dto/userRequest");
+const userService = require('../services/userService');
+const UserRequest = require('../dtos/userRequest');
 
 async function signUp(req, res) {
   const { userId, password, name, nickname } = req.body;
@@ -11,7 +11,7 @@ async function signUp(req, res) {
     res.status(201).json(user);
   } catch (error) {
     //todo
-    res.status(505).json("error");
+    res.status(505).json('error');
   }
 }
 
