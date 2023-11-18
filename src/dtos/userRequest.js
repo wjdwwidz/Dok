@@ -1,5 +1,8 @@
 const falsey = require('falsey');
 
+/**
+ * client에서 요청한 데이터를 담는 클래스
+ */
 class UserRequest {
   constructor(userId, password, name, nickname) {
     if (
