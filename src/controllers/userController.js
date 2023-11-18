@@ -10,7 +10,6 @@ async function signUp(req, res) {
     const user = await userService.createUser(userRequest);
     res.status(201).json(user);
   } catch (error) {
-    //todo
     res.status(error.getStatusCode()).json(error.getMessage());
   }
 }
