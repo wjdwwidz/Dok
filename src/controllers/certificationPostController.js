@@ -1,11 +1,11 @@
 const CertificationPostService = require('../services/certificationPostService');
 
 //전체 인증글 조회
-const getCertificationPosts = async (req, re, next) => {
+const getCertificationPosts = async (req, res, next) => {
   try {
     const certificationPostService = new CertificationPostService();
     const findCertificationPosts =
-      await certificationPostService().getCertificationPost;
+      await certificationPostService().getCertificationPosts();
 
     res.status(200).json({
       data: findCertificationPosts,
@@ -21,7 +21,7 @@ const getCertificationPostDetails = async (req, res, next) => {
   try {
     const certificationPostDetailService = new CertificationPostService();
     const findCertificationPostDetails =
-      await certificationPostDetailService.postCertificationPost;
+      await certificationPostDetailService.getCertificationPostDetail();
 
     res.status(200).json({
       data: findCertificationPostDetails,
