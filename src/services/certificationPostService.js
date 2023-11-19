@@ -68,7 +68,32 @@ class CertificationPostService {
     return updatedReview;
   }
 
-  // 검색기능(지역, 날짜, 시간 순으로 sort)
+  // 검색기능
+  // 지역 선택
+  locationCertificationPost() {
+    const { location } = req.body;
+
+    const locationCertificationPost = CertificationPost.find({
+      location: location,
+    })
+      .populate('user')
+      .populate('matchingPost')
+      .populate('review');
+
+    return locationCertificationPost;
+  }
+  // 날짜 선택
+
+  // 최신순으로 정렬
+  timeCertificationPost() {
+    const timeCertificationPost = CertificationPost.find({})
+      .populate('user')
+      .populate('matchingPost')
+      .populate('review')
+      .sort({ createdAt: -1 });
+
+    return timeCertificationPost;
+  }
 }
 
 module.exports = CertificationPostService;
