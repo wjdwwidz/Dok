@@ -40,6 +40,16 @@ const postCertificationPosts = async (req, res, next) => {
   }
 };
 
+// 리뷰 생성
+const postCertificationPostReviews = async (req, res, next) => {
+  try {
+  } catch (err) {
+    next(err);
+  }
+};
+
+// 리뷰 수정
+
 module.exports = {
   getCertificationPosts,
   getCertificationPostDetails,

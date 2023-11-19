@@ -1,15 +1,15 @@
 const {
   CertificationPost,
-} = require("../models/certificationPost/certificationPost");
-const {} = require("../models/certificationPostReview/certificationPostReview");
+} = require('../models/certificationPost/certificationPost');
+const {} = require('../models/certificationPostReview/certificationPostReview');
 
 class CertificationPostService {
   // 모든 인증글 조회
   getCertificationPosts() {
     const findCertificationPost = CertificationPost.find({})
-      .populate("user")
-      .populate("matchingPost")
-      .populate("review");
+      .populate('user')
+      .populate('matchingPost')
+      .populate('review');
 
     return findCertificationPost;
   }
@@ -18,7 +18,7 @@ class CertificationPostService {
   getCertificationPostDetail() {
     const findCertificationPostDetail = CertificationPost.find({
       user_id: _id,
-    }).populate("review");
+    }).populate('review');
 
     return findCertificationPostDetail;
   }
@@ -36,6 +36,36 @@ class CertificationPostService {
     });
 
     return newCertificationPost;
+  }
+
+  // 리뷰 생성
+  postCertificationPostReview() {
+    const { reviewText } = req.body.review;
+    const { name } = req.body.user;
+    const newReview = CertificationPost.create({
+      name,
+      reviewText,
+      // 별점(score) 추가 예정
+    });
+
+    return newReview;
+  }
+
+  // 리뷰 수정
+  putCertificationPostReview() {
+    const { certificationId } = req.params;
+    const { reviewText } = req.body.review;
+
+    const updatedReview = CertificationPost.updateOne(
+      {
+        _id: certificationId,
+      },
+      {
+        reviewText,
+      },
+    );
+
+    return updatedReview;
   }
 
   // 검색기능(지역, 날짜, 시간 순으로 sort)

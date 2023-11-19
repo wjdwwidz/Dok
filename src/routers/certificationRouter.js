@@ -1,16 +1,19 @@
 const { Router } = require('express');
 const {
   getCertificationPosts,
-  // getCertificationPostDetail,
+  getCertificationPostDetails,
+  postCertificationPosts,
 } = require('../controllers/certificationPostController');
 
 const router = Router();
 
 // 인증글 생성
-router.post('/api/certificationPostList', getCertificationPosts);
+router.post('/api/postCertificationPost', postCertificationPosts);
 // 전체 인증글 조회
-router.get('/api/certificationPostList', getCertificationPosts);
+router.get('/api/getCertificationPost', getCertificationPosts);
 // 상세 인증글 조회
-// router.get('/api/certificationPostList', getCertificationPostDetail);
-
+router.get('/api/getCertificationPostDetails', getCertificationPostDetails);
+// 리뷰 생성
+router.post('/');
+// 리뷰 수정
 module.exports = router;
