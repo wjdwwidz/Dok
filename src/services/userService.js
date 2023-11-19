@@ -4,17 +4,17 @@ const User = require('../models/user/user');
 const PasswordEncoder = require('../utils/passwordEncoder');
 const falsey = require('falsey');
 
-async function createUser(userRequest) {
+async function createUser(userCreateRequest) {
   const encryptedPassword = await PasswordEncoder.hash(
-    userRequest.getPassword(),
+    userCreateRequest.getPassword(),
   );
 
   const user = new User({
     //mongoose dao 역할 이자 모델
-    userId: userRequest.getUserId(),
+    userId: userCreateRequest.getUserId(),
     password: encryptedPassword,
-    name: userRequest.getName(),
-    nickname: userRequest.getNickname(),
+    name: userCreateRequest.getName(),
+    nickname: userCreateRequest.getNickname(),
   });
 
   await user.save();

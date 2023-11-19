@@ -3,7 +3,7 @@ const { BadRequestError } = require('../errors/badReqestError');
 /**
  * client에서 요청한 데이터를 담는 클래스
  */
-class UserRequest {
+class UserCreateRequest {
   constructor(userId, password, name, nickname) {
     this.validate(userId, password, name, nickname);
 
@@ -54,4 +54,4 @@ class UserRequest {
   }
 }
 
-module.exports = UserRequest;
+module.exports = UserCreateRequest;
