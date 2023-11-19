@@ -35,6 +35,14 @@ const getCertificationPostDetails = async (req, res, next) => {
 // 인증글 생성
 const postCertificationPosts = async (req, res, next) => {
   try {
+    const certificationPostService = new CertificationPostService();
+    const newCertificationPost =
+      certificationPostService.postCertificationPost();
+
+    res.status(200).json({
+      data: newCertificationPost,
+      msg: '인증글 생성',
+    });
   } catch (err) {
     next(err);
   }
@@ -43,6 +51,13 @@ const postCertificationPosts = async (req, res, next) => {
 // 리뷰 생성
 const postCertificationPostReviews = async (req, res, next) => {
   try {
+    const certificationPostService = new CertificationPostService();
+    const newReview = certificationPostService.postCertificationPostReview();
+
+    res.status(200).json({
+      data: newReview,
+      msg: '리뷰 생성',
+    });
   } catch (err) {
     next(err);
   }
@@ -54,4 +69,5 @@ module.exports = {
   getCertificationPosts,
   getCertificationPostDetails,
   postCertificationPosts,
+  postCertificationPostReviews,
 };
