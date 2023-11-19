@@ -7,10 +7,10 @@ class PasswordEncoder {
     return hashed;
   }
 
-  static async compare(password, hash) {
+  static async compare(inputPassword, encryptedPassword) {
     // general 한 util 클래스는 static 으로 선언하여 사용하는 것이 좋음 for memory
     //new 키워드로 password 관련 함수 호출시 메모리에 각자 다른 인스턴스 올라감 : 개별적으로 변경 가능성 생김 (js : public, private x)
-    return await bcrypt.compare(password, hash);
+    return await bcrypt.compare(inputPassword, encryptedPassword);
   }
 }
 
