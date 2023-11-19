@@ -18,4 +18,17 @@ async function signUp(req, res) {
   }
 }
 
-module.exports = { signUp };
+async function signIn(req, res) {
+  const { userId, password } = req.body;
+  try {
+    const user = await userService.signIn(userId, password);
+    res.status(200).json(user);
+  } catch (error) {
+    if (falsey(error.getStatusCode)) {
+      res.status(500).json(error.message); //우리가 모르는 에러는 500으로 던진다
+    }
+    res.status(error.getStatusCode()).json(error.getMessage()); //커스텀에러 상속 받은 모든 에러
+  }
+}
+
+module.exports = { signUp, signIn };
