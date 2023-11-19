@@ -1,6 +1,8 @@
-const CustomError = require('../errors/customError');
+const UnauthenticationError = require('../errors/unauthenticationError');
+const NotFoundError = require('../errors/notFoundError');
 const User = require('../models/user/user');
 const PasswordEncoder = require('../utils/passwordEncoder');
+const falsey = require('falsey');
 
 async function createUser(userRequest) {
   const encryptedPassword = await PasswordEncoder.hash(
@@ -15,13 +17,24 @@ async function createUser(userRequest) {
     nickname: userRequest.getNickname(),
   });
 
-  try {
-    await user.save();
-    return user;
-  } catch (error) {
-    console.error(error);
-    throw new CustomError(error.message, 500);
-  }
+  await user.save();
+  return user;
 }
 
-module.exports = { createUser };
+async function signIn(userId, password) {
+  const user = await User.findOne({ userId: userId });
+  if (falsey(user)) {
+    throw new NotFoundError(`존재하지 않는 아이디입니다. inputId: ${userId}`);
+  }
+
+  const isMatch = await PasswordEncoder.compare(password, user.password);
+  if (!isMatch) {
+    throw new UnauthenticationError(
+      `비밀번호가 일치하지 않습니다. inputPassword: ${password}`,
+    );
+  }
+
+  return user;
+}
+
+module.exports = { createUser, signIn };
