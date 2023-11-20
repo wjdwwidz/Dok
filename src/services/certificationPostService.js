@@ -1,7 +1,9 @@
 const {
   CertificationPost,
 } = require('../models/certificationPost/certificationPost');
-const {} = require('../models/certificationPostReview/certificationPostReview');
+const {
+  CertificationPostReview,
+} = require('../models/certificationPostReview/certificationPostReview');
 
 class CertificationPostService {
   // 모든 인증글 조회
@@ -9,15 +11,17 @@ class CertificationPostService {
     const findCertificationPost = CertificationPost.find({})
       .populate('user')
       .populate('matchingPost')
-      .populate('review');
+      .populate('review')
+      .sort({ createdAt: -1 }); // 인증글을 createdAt 기준으로 내림차순으로 정렬
 
     return findCertificationPost;
   }
 
-  // 상세 인증글 조회 ( find부분 수정 필요 )
+  // 상세 인증글 조회
   getCertificationPostDetail() {
+    const { userId } = req.body;
     const findCertificationPostDetail = CertificationPost.find({
-      user_id: _id,
+      _id: userId,
     }).populate('review');
 
     return findCertificationPostDetail;
@@ -37,12 +41,21 @@ class CertificationPostService {
 
     return newCertificationPost;
   }
-
+  // req.body에서 _id값을 받아서 그 값이 일치하는 인증글의 review가 처음에는 null값이니깐 그 값을 update해줘야한다.
   // 리뷰 생성
   postCertificationPostReview() {
+    const { postId } = req.params;
+    const nnewReview = CertificationPost.updateOne(
+      {
+        _id: postId,
+      },
+      {
+        reviewText,
+      },
+    );
     const { reviewText } = req.body.review;
     const { name } = req.body.user;
-    const newReview = CertificationPost.create({
+    const newReview = CertificationPost.find({ _id: postId }).create({
       name,
       reviewText,
       // 별점(score) 추가 예정
@@ -83,17 +96,6 @@ class CertificationPostService {
     return locationCertificationPost;
   }
   // 날짜 선택
-
-  // 최신순으로 정렬
-  timeCertificationPost() {
-    const timeCertificationPost = CertificationPost.find({})
-      .populate('user')
-      .populate('matchingPost')
-      .populate('review')
-      .sort({ createdAt: -1 });
-
-    return timeCertificationPost;
-  }
 }
 
 module.exports = CertificationPostService;
