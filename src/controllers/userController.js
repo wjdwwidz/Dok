@@ -12,8 +12,9 @@ async function signUp(req, res) {
   } catch (error) {
     if (falsey(error.getStatusCode)) {
       res.status(500).json(error.message);
+      return;
     }
-    res.status(error.getStatusCode()).json(error.getMessage());
+    // res.status(error.getStatusCode()).json(error.getMessage());
   }
 }
 
