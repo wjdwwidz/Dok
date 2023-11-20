@@ -25,12 +25,13 @@ async function signIn(req, res) {
     res.status(201).json(user);
   } catch (error) {
     // next(error);
-    res.status(404).json(error.message);
-    console.log(error);
-    if (falsey(error.getStatusCode)) {
+    if (error.getStatusCode() === 404) {
+      res.status(404).json(error.message);
+    } else if (falsey(error.getStatusCode)) {
       res.status(500).json(error.message); //우리가 모르는 에러는 500으로 던진다
+    } else {
+      res.status(error.getStatusCode()).json(error.getMessage()); //커스텀에러 상속받은 모든 에러
     }
-    res.status(error.getStatusCode()).json(error.getMessage()); //커스텀에러 상속받은 모든 에러
   }
 }
 
