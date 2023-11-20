@@ -15,7 +15,7 @@ const userRouter = require('./routers/userRouter');
 require('dotenv').config();
 // const cors = require('cors');
 
-// const dbFill = require('./dbFill.js');
+const dbFill = require('./dbFill.js');
 
 const matchingPostRouter = require('./routers/matchingPostRouter.js');
 
@@ -48,10 +48,10 @@ app.get('/', (req, res) => {
 });
 
 app.use('/matchingPostLists', matchingPostRouter); // 전체 게시글 불러오기
-app.use('/matchingPostDetail', matchingPostRouter); //댓글
+app.use('/matchingPostDetail', matchingPostRouter); // 상세 정보 불러오기 ()
 app.use('/api/certificationRouter', certificationPostRouter);
 
 app.listen(process.env.PORT, () => {
-  //   dbFill();
+  // dbFill();
   console.log(`Express server starting on port ${process.env.PORT}`);
 });

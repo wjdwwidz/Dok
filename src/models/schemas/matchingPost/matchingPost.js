@@ -11,20 +11,18 @@ const MatchingPostSchema = new Schema(
 
     user_dog: {
       type: Schema.Types.ObjectId,
-      ref: 'User_dog',
+      ref: 'UserDog',
       required: true,
     },
 
     matching_handler_request: {
       type: Schema.Types.ObjectId,
       ref: 'Matching_handler_request',
-      required: true,
     },
 
     matching_post_comment: {
       type: Schema.Types.ObjectId,
       ref: 'Matching_post_comment',
-      required: true,
     },
 
     price: {
@@ -61,9 +59,6 @@ const MatchingPostSchema = new Schema(
   },
 );
 
-const MatchingPostComment = mongoose.model(
-  'matchingPostComment',
-  MatchingPostSchema,
-);
+const MatchingPost = mongoose.model('MatchingPost', MatchingPostSchema);
 
-module.exports = MatchingPostComment;
+module.exports = MatchingPost;

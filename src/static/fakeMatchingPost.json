@@ -1,0 +1,13 @@
+{
+  "data": [
+    {
+      "user": "655774f52aaed92f196f1aa4",
+      "user_dog": "655ac7ffcde2d52f83105c28",
+      "price": 50000,
+      "location": "서울 강동구",
+      "location_detail": "123번지",
+      "walking_date": "11월 13일",
+      "walking_duration": 1
+    }
+  ]
+}
