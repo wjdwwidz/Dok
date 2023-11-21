@@ -4,6 +4,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerFile = require('../swagger-output.json');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const errorHandler = require('./middlewares/errorHandler');
 
 const cors = require('cors');
 require('dotenv').config();
@@ -51,6 +52,7 @@ app.use('/matchingPostLists', matchingPostRouter); // 전체 게시글 불러오
 app.use('/matchingPostDetail', matchingPostRouter); //댓글
 app.use('/api/certificationRouter', certificationPostRouter);
 
+app.use(errorHandler);
 app.listen(process.env.PORT, () => {
   //   dbFill();
   console.log(`Express server starting on port ${process.env.PORT}`);
