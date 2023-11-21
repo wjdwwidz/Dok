@@ -13,31 +13,31 @@ const getMatchingPosts = async (req, res) => {
 
 // 댓글 가져오기
 const getComments = async (req, res) => {
-  const data = req.params; //해당 matchingpost의 _id
-  console.log(data);
+  const { matching_post_id } = req.query; //해당 matchingpost의 _id
   const matchingPostService = new MatchingPostService();
-  const GetComment = await matchingPostService.getAllComments(data);
-
+  const GetComment = await matchingPostService.getAllComments(matching_post_id);
   res.status(200).json({
-    data: { GetComment },
+    data: GetComment,
     message: '댓글 리스트 입니다',
   });
 };
 
-//댓글 작성하기
+//댓글 작성하기  -> 에러...
 const postComment = async (req, res) => {
-  const { matching_post_id, user, comment, parent_comment_id } = req.body; // 작성할 댓글 관련 정보를 body에 담아옴
-  const matchingPostService = new MatchingPostService();
-  const postComment = await matchingPostService.postComment(
-    matching_post_id,
-    user,
-    comment,
-    parent_comment_id,
-  );
-  res.status(200).json({
-    data: { comment_id: postComment._id },
-    message: '댓글이 등록되었습니다',
-  });
+  try {
+    const data = req.body; // req.body로 잘 받아옴
+    const matchingPostService = new MatchingPostService();
+    const postComment = await matchingPostService.postComment(data);
+    console.log(postComment);
+
+    res.status(200).json({
+      test: 'test',
+      // data: { postComment },
+      // message: '댓글이 등록되었습니다',
+    });
+  } catch (err) {
+    console.log('에러 발생');
+  }
 };
 
 // //댓글 수정하기

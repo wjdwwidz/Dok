@@ -3,7 +3,8 @@ const MatchingPostComment = require('../models/schemas/matchingPostComment/match
 const MatchingHandlerRequest = require('../models/schemas/matchingHandlerRequest/matchingHandlerRequest');
 
 class MatchingPostService {
-  //전체 매칭 글 가져오기
+  //전체 매칭 글 가져오기  -> 얘는 잘됨 뭔 차이지..
+  // MatchingPostService
 
   getMatchingPost() {
     const findPost = MatchingPost.find({})
@@ -13,23 +14,27 @@ class MatchingPostService {
   }
 
   // 댓글 가져오기
-  getAllComments(data) {
-    const findComments = MatchingPostComment.find({
-      matching_post_id: data,
+  async getAllComments(matching_post_id) {
+    const findComments = await MatchingPostComment.find({
+      matching_post_id: matching_post_id,
     });
     return findComments;
   }
 
-  //댓글 작성하기
-  postComment(matching_post_id, user, comment, parent_comment_id) {
-    console.log(MatchingPostComment);
-    const postComment = MatchingPostComment.create({
-      matching_post_id,
-      user,
-      comment,
-      parent_comment_id,
-    });
-    return postComment;
+  //댓글 작성하기 -> Error: POSTMAN 요청 / 응답 잘 됌, objectId 까지 생성 완료했는데 db에 저장이 안됨
+  async postComment(data) {
+    try {
+      const postComment = await MatchingPostComment.create(data);
+      // matching_post_id: matching_post_id,
+      // user: user,
+      // comment: comment,
+      // parent_comment_id: parent_comment_id,
+      console.log(postComment);
+      return;
+    } catch (error) {
+      console.error('Error while posting comment:', error);
+      throw error;
+    }
   }
 
   // //댓글 수정하기 댓글의 id값으로 찾은 후 update
@@ -61,11 +66,11 @@ class MatchingPostService {
   //   return findPostList;
   // }
 
-  // //산책 요청 보내기
-  // postRequest(data) {
-  //   const postRequest = MatchingHandlerRequest.create(data);
-  //   return postRequest;
-  // }
+  //산책 요청 보내기
+  postRequest(data) {
+    const postRequest = MatchingHandlerRequest.create(data);
+    return postRequest;
+  }
 }
 
 module.exports = MatchingPostService;

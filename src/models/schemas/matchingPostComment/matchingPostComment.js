@@ -32,4 +32,5 @@ const MatchingPostComment = model(
   MatchingPostCommentSchema,
 );
 console.log(MatchingPostComment);
+
 module.exports = MatchingPostComment;

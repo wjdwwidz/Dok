@@ -14,7 +14,8 @@ const router = Router();
 router.get('/', getMatchingPosts); //전체 매칭 글 가져오기(default)
 
 //댓글 관련 기능
-router.get('/:matching_post_id', getComments); // 댓글 가져오기
+
+router.get('/api', getComments); // 댓글 가져오기
 router.post('/', postComment); //댓글 작성하기
 
 //산책 요청 기능
