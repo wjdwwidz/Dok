@@ -41,6 +41,10 @@ const userDogSchema = new Schema({
 
 userDogSchema.set('timestamps', true);
 
-const UserDog = mongoose.model('UserDog', userDogSchema);
+// const UserDog = model('UserDog', userDogSchema);
 
-module.exports = UserDog;
+console.log(UserDog);
+
+// module.exports = UserDog;
+
+module.exports = mongoose.model('user_dog', userDogSchema);

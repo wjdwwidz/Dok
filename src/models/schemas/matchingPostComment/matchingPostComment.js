@@ -18,9 +18,11 @@ const MatchingPostCommentSchema = new Schema(
     },
     parent_comment_id: {
       type: String,
+      default: null,
     },
     deleted_at: {
       type: Date,
+      default: null,
     },
   },
   {
@@ -32,5 +34,6 @@ const MatchingPostComment = model(
   MatchingPostCommentSchema,
 );
 console.log(MatchingPostComment);
+console.log(MatchingPostCommentSchema.timestamps);
 
 module.exports = MatchingPostComment;

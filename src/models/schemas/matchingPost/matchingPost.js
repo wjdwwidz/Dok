@@ -11,7 +11,7 @@ const MatchingPostSchema = new Schema(
 
     user_dog: {
       type: Schema.Types.ObjectId,
-      ref: 'UserDog',
+      ref: 'user_dog',
       required: true,
     },
 

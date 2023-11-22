@@ -1,4 +1,4 @@
-const { mongoose, model, Schema } = require('mongoose');
+const { mongoose, Schema } = require('mongoose');
 // const shortId = require('shortid');
 
 const userSchema = new Schema({
@@ -44,4 +44,4 @@ const userSchema = new Schema({
 userSchema.set('timestamps', true);
 
 //const User = model('User', userSchema);
-module.exports = mongoose.models.users || mongoose.model('users', userSchema);
+module.exports = mongoose.models.users || mongoose.model('User', userSchema);
