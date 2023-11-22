@@ -13,11 +13,8 @@ class JwtUtil {
     this.alg = 'HS256';
   }
 
-  // secret = new TextEncoder().encode(process.env.JWT_SECRET_KEY);
-  // alg = 'HS256';
   async encode(userId) {
     try {
-      // const jwtUtil = new JwtUtil();
       const token = await new jose.SignJWT({
         alg: this.alg,
         format: 'compact',
@@ -35,6 +32,26 @@ class JwtUtil {
       throw error;
     }
   }
+
+  async decode(token) {
+    try {
+      const { payload } = await decodeJwt(token, this.secret, this.alg);
+      return payload.sub;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async verify(token) {
+    try {
+      const { payload } = await jwtVerify(token, this.secret);
+      return payload.sub;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async;
 }
 
 module.exports = JwtUtil;
