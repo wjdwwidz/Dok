@@ -1,4 +1,4 @@
-const { mongoose, Schema } = require('mongoose');
+const { model, Schema } = require('mongoose');
 
 const userDogSchema = new Schema({
   user: {
@@ -34,17 +34,15 @@ const userDogSchema = new Schema({
     type: String,
     required: false,
   },
-  deleted_at: {
+  deletedAt: {
     type: Date,
   },
 });
 
 userDogSchema.set('timestamps', true);
 
-// const UserDog = model('UserDog', userDogSchema);
+const UserDog = model('UserDog', userDogSchema);
 
 console.log(UserDog);
 
-// module.exports = UserDog;
-
-module.exports = mongoose.model('user_dog', userDogSchema);
+module.exports = UserDog;

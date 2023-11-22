@@ -2,7 +2,7 @@ const { model, Schema } = require('mongoose');
 
 const MatchingPostCommentSchema = new Schema(
   {
-    matching_post_id: {
+    matchingPostId: {
       type: Schema.Types.ObjectId,
       ref: 'MatchingPost',
       required: true,
@@ -16,11 +16,11 @@ const MatchingPostCommentSchema = new Schema(
       type: String,
       required: true,
     },
-    parent_comment_id: {
+    parentCommentId: {
       type: String,
       default: null,
     },
-    deleted_at: {
+    deletedAt: {
       type: Date,
       default: null,
     },
@@ -34,6 +34,5 @@ const MatchingPostComment = model(
   MatchingPostCommentSchema,
 );
 console.log(MatchingPostComment);
-console.log(MatchingPostCommentSchema.timestamps);
 
 module.exports = MatchingPostComment;

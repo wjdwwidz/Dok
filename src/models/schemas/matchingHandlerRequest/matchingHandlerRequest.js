@@ -9,13 +9,13 @@ const MatchingHandlerRequestSchema = new Schema(
       required: true,
     },
 
-    matching_post_id: {
+    matchingPostId: {
       type: Schema.Types.ObjectId,
       ref: 'MatchingPost',
       required: true,
     },
 
-    deleted_at: {
+    deletedAt: {
       type: Date,
     },
   },

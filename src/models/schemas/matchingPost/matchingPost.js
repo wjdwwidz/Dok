@@ -9,20 +9,20 @@ const MatchingPostSchema = new Schema(
       required: true,
     },
 
-    user_dog: {
+    userDog: {
       type: Schema.Types.ObjectId,
-      ref: 'user_dog',
+      ref: 'UserDog',
       required: true,
     },
 
-    matching_handler_request: {
+    matchingHandlerRequest: {
       type: Schema.Types.ObjectId,
-      ref: 'Matching_handler_request',
+      ref: 'MatchingHandlerRequest',
     },
 
     matching_post_comment: {
       type: Schema.Types.ObjectId,
-      ref: 'Matching_post_comment',
+      ref: 'MatchingPostComment',
     },
 
     price: {
@@ -35,22 +35,27 @@ const MatchingPostSchema = new Schema(
       required: true,
     },
 
-    location_detail: {
+    locationDetail: {
       type: String,
       required: true,
     },
 
-    walking_date: {
+    walkingDate: {
       type: String,
       required: true,
     },
 
-    walking_duration: {
+    walkingDuration: {
       type: Number,
       required: true,
     },
 
-    deleted_at: {
+    matchingStatus: {
+      type: String,
+      default: '매칭중',
+    },
+
+    deletedAt: {
       type: Date,
     },
   },
