@@ -5,7 +5,7 @@ const getCertificationPosts = async (req, res, next) => {
   try {
     const certificationPostService = new CertificationPostService();
     const findCertificationPosts =
-      await certificationPostService().getCertificationPosts();
+      await certificationPostService.getCertificationPosts();
 
     res.status(200).json({
       data: findCertificationPosts,
