@@ -13,9 +13,18 @@ const certificationSchema = new Schema({
   sublocation: {
     type: String,
   },
+  postText: {
+    type: String,
+  },
   review: {
-    type: Schema.Types.ObjectId,
-    ref: 'CertificationPostReview',
+    rating: {
+      type: Number,
+      required: true,
+    },
+    reviewText: {
+      type: String,
+      required: true,
+    },
   },
   // 인증글 삭제시간
   deletedAt: {
