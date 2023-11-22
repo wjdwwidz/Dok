@@ -3,9 +3,27 @@ const UserCreateRequest = require('../dtos/users/userCreateRequest');
 const UserSignInRequest = require('../dtos/users/userSignInRequest');
 
 async function signUp(req, res, next) {
-  const { userId, password, name, nickname } = req.body;
+  const {
+    userId,
+    password,
+    name,
+    nickname,
+    phoneNumber,
+    address,
+    introduce,
+    isCertificated,
+  } = req.body;
   try {
-    const userRequest = new UserCreateRequest(userId, password, name, nickname);
+    const userRequest = new UserCreateRequest(
+      userId,
+      password,
+      name,
+      nickname,
+      phoneNumber,
+      address,
+      introduce,
+      isCertificated,
+    );
     const user = await userService.createUser(userRequest);
     res.status(201).json(user);
   } catch (error) {
