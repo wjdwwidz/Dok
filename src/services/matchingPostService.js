@@ -6,11 +6,26 @@ class MatchingPostService {
   //전체 매칭 글 가져오기  -> Error : user_dog의 populate 안됨
   // MatchingPostService
 
-  async getMatchingPost() {
-    const findPost = await MatchingPost.find({})
-      .populate('user') //user는 잘 됨
-      .populate('userDog'); //user_dog 얘가 문제임 populate의 문제가 아님
-    return findPost;
+  async getMatchingPost(location, walkingDate) {
+    if (!location && !walkingDate) {
+      const findPost = await MatchingPost.find({}).populate('user');
+      // .populate('userDog');
+      return findPost;
+    } else if (!walkingDate) {
+      //location 검색 string값이 같은거 조회
+      const findPost = await MatchingPost.find({
+        location: location,
+      }).populate('user');
+      // .populate('userDog');
+      return findPost;
+    } else if (!location) {
+      //date 검색
+      const findPost = await MatchingPost.find({
+        walkingDate: { $gte: walkingDate },
+      }).populate('user');
+      // .populate('userDog');
+      return findPost;
+    }
   }
 
   // 댓글 가져오기 ✅

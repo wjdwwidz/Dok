@@ -50,6 +50,11 @@ const MatchingPostSchema = new Schema(
       required: true,
     },
 
+    text: {
+      type: String,
+      required: true,
+    },
+
     matchingStatus: {
       type: String,
       default: '매칭중',

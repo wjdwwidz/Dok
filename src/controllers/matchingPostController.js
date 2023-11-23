@@ -2,8 +2,13 @@ const MatchingPostService = require('../services/matchingPostService');
 
 //전체 매칭 글 가져오기
 const getMatchingPosts = async (req, res) => {
+  const { location, walkingDate } = req.body;
   const matchingPostService = new MatchingPostService();
-  const findMatchingPosts = await matchingPostService.getMatchingPost();
+  const findMatchingPosts = await matchingPostService.getMatchingPost(
+    location,
+    walkingDate,
+  );
+
   console.log(findMatchingPosts);
   res.status(200).json({
     data: { findMatchingPosts },
