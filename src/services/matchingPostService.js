@@ -1,6 +1,6 @@
-const MatchingPost = require('../models/schemas/matchingPost/matchingPost');
-const MatchingPostComment = require('../models/schemas/matchingPostComment/matchingPostComment');
-const MatchingHandlerRequest = require('../models/schemas/matchingHandlerRequest/matchingHandlerRequest');
+const MatchingPost = require('../models/matchingPost/matchingPost');
+const MatchingPostComment = require('../models/matchingPostComment/matchingPostComment');
+const MatchingHandlerRequest = require('../models/matchingHandlerRequest/matchingHandlerRequest');
 
 class MatchingPostService {
   //전체 매칭 글 가져오기  -> Error : user_dog의 populate 안됨

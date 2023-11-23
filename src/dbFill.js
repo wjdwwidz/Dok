@@ -6,11 +6,11 @@
 // const fakeMatchingPost = require('./static/fakeMatchingPost.json');
 // const fakeMatchingPostRequest = require('./static/fakeMatchingPostRequest.json');
 
-// const MatchingPostComment = require('./models/schemas/matchingPostComment/matchingPostComment');
-// const User = require('./models/schemas/user/user');
-// const UserDog = require('./models/schemas/userDog/userDog');
-// const MatchingPost = require('./models/schemas/matchingPost/matchingPost');
-// const MatchingHandlerRequest = require('./models/schemas/matchingHandlerRequest/matchingHandlerRequest');
+// const MatchingPostComment = require('./models/matchingPostComment/matchingPostComment');
+// const User = require('./models/user/user');
+// const UserDog = require('./models/userDog/userDog');
+// const MatchingPost = require('./models/matchingPost/matchingPost');
+// const MatchingHandlerRequest = require('./models/matchingHandlerRequest/matchingHandlerRequest');
 
 const dbFill = async (req, res) => {
   //await User.insertMany(fakeUser.data);
