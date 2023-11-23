@@ -17,14 +17,11 @@ class JwtUtil {
     try {
       const token = await new jose.SignJWT({
         alg: this.alg,
-        format: 'compact',
       })
         .setProtectedHeader({ alg: this.alg })
-        .setIssuedAt()
-        .setIssuer('urn:example:issuer')
-        .setAudience('urn:example:audience')
-        .setExpirationTime('2h')
         .setSubject(userId)
+        .setIssuedAt()
+        .setExpirationTime('2h')
         .sign(this.secret);
       return token;
     } catch (error) {
@@ -35,8 +32,12 @@ class JwtUtil {
 
   async decode(token) {
     try {
-      const { payload } = await decodeJwt(token, this.secret, this.alg);
-      return payload.sub;
+      const decryptedPayload = await jose.jwtDecrypt(
+        token,
+        this.secret,
+        this.alg,
+      );
+      return decryptedPayload.sub;
     } catch (error) {
       throw error;
     }
@@ -44,14 +45,13 @@ class JwtUtil {
 
   async verify(token) {
     try {
-      const { payload } = await jwtVerify(token, this.secret);
-      return payload.sub;
+      const verifiedPayload = await jose.jwtVerify(token, this.secret);
+      //console.log(verifiedPayload);
+      return verifiedPayload.sub;
     } catch (error) {
       throw error;
     }
   }
-
-  async;
 }
 
 module.exports = JwtUtil;
