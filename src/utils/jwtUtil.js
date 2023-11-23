@@ -30,19 +30,6 @@ class JwtUtil {
     }
   }
 
-  async decode(token) {
-    try {
-      const decryptedPayload = await jose.jwtDecrypt(
-        token,
-        this.secret,
-        this.alg,
-      );
-      return decryptedPayload.sub;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async verify(token) {
     try {
       const verifiedPayload = await jose.jwtVerify(token, this.secret);
