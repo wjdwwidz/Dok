@@ -39,10 +39,12 @@ app.get('/', (req, res) => {
 
 app.use('/api/users', userRouter);
 app.use('/matchingPostLists', matchingPostRouter); // 전체 게시글 불러오기
-app.use('/matchingPostDetail', matchingPostRouter); //댓글
+app.use('/matchingPostDetail', matchingPostRouter); // 상세 정보 불러오기 ()
+
 app.use('/api/certificationRouter', certificationPostRouter);
 
 app.use(errorHandler);
 app.listen(process.env.PORT, () => {
+  // dbFill();
   console.log(`Express server starting on port ${process.env.PORT}`);
 });

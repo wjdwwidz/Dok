@@ -9,21 +9,9 @@ const MatchingPostSchema = new Schema(
       required: true,
     },
 
-    user_dog: {
+    userDog: {
       type: Schema.Types.ObjectId,
-      ref: 'User_dog',
-      required: true,
-    },
-
-    matching_handler_request: {
-      type: Schema.Types.ObjectId,
-      ref: 'Matching_handler_request',
-      required: true,
-    },
-
-    matching_post_comment: {
-      type: Schema.Types.ObjectId,
-      ref: 'Matching_post_comment',
+      ref: 'UserDog',
       required: true,
     },
 
@@ -37,22 +25,32 @@ const MatchingPostSchema = new Schema(
       required: true,
     },
 
-    location_detail: {
+    locationDetail: {
       type: String,
       required: true,
     },
 
-    walking_date: {
+    walkingDate: {
       type: String,
       required: true,
     },
 
-    walking_duration: {
+    walkingDuration: {
       type: Number,
       required: true,
     },
 
-    deleted_at: {
+    text: {
+      type: String,
+      required: true,
+    },
+
+    matchingStatus: {
+      type: String,
+      default: '매칭중',
+    },
+
+    deletedAt: {
       type: Date,
     },
   },
@@ -61,9 +59,6 @@ const MatchingPostSchema = new Schema(
   },
 );
 
-const MatchingPostComment = mongoose.model(
-  'matchingPostComment',
-  MatchingPostSchema,
-);
+const MatchingPost = mongoose.model('MatchingPost', MatchingPostSchema);
 
-module.exports = MatchingPostComment;
+module.exports = MatchingPost;
