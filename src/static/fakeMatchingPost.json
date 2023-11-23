@@ -4,10 +4,30 @@
       "user": "655774f52aaed92f196f1aa4",
       "userDog": "655ac7ffcde2d52f83105c28",
       "price": 50000,
-      "location": "서울 강동구",
+      "location": "서울 강동구 무슨동",
       "locationDetail": "123번지",
       "walkingDate": "11월 13일",
       "walkingDuration": 1,
+      "matchingStatus": "매칭중"
+    },
+    {
+      "user": "655774f52aaed92f196f1aa5",
+      "userDog": "655ac7ffcde2d52f83105c29",
+      "price": 50000,
+      "location": "서울 강서구 어쩌구동",
+      "locationDetail": "456번지",
+      "walkingDate": "11월 13일",
+      "walkingDuration": 1,
+      "matchingStatus": "매칭중"
+    },
+    {
+      "user": "655774f52aaed92f196f1aa6",
+      "userDog": "655ac7ffcde2d52f83105c2a",
+      "price": 50000,
+      "location": "광주광역시 서구 용봉동",
+      "locationDetail": "123번지",
+      "walkingDate": "11월 31일",
+      "walkingDuration": 2,
       "matchingStatus": "매칭중"
     }
   ]

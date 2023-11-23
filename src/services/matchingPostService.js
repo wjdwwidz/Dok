@@ -16,7 +16,7 @@ class MatchingPostService {
   // 댓글 가져오기 ✅
   async getAllComments(matchingPostId) {
     const findComments = await MatchingPostComment.find({
-      matchingPostId: matchingPostId,
+      matchingPostId: matchingPostId, //deletedAt이 찍힌 건 안가져오도록 하는 쿼리 필요!!
     }).populate('user');
     return findComments;
   }
@@ -40,7 +40,7 @@ class MatchingPostService {
 
   //댓글 수정하기 댓글의 id값으로 찾은 후 update
   async updateComment(commentId, comment) {
-    const postComment = await MatchingPostComment.findOneAndUpdate(
+    const updateComment = await MatchingPostComment.findOneAndUpdate(
       {
         _id: commentId,
       },
@@ -49,7 +49,7 @@ class MatchingPostService {
       },
       { new: true },
     );
-    return postComment;
+    return updateComment;
   }
 
   //댓글 삭제하기(댓글 진짜 삭제x -> deleted_at 찍히게)
@@ -61,14 +61,14 @@ class MatchingPostService {
     return deleteComment;
   }
 
-  // // 해당 게시글의 산책 요청 리스트 가져오기
-  // matchingPostList(matchingPostId) {
-  //   const findPostList = MatchingHandlerRequest.find({
-  //     matchingPostId: matchingPostId,
-  //   }).populate('user');
+  // 해당 게시글의 산책 요청 리스트 가져오기
+  getRequestLists(matchingPostId) {
+    const findPostLists = MatchingHandlerRequest.find({
+      matchingPostId: matchingPostId,
+    }).populate('user');
 
-  //   return findPostList;
-  // }
+    return findPostLists;
+  }
 
   //산책 요청 보내기
   postRequest(user, matchingPostId) {
