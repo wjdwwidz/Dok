@@ -15,16 +15,6 @@ const MatchingPostSchema = new Schema(
       required: true,
     },
 
-    matchingHandlerRequest: {
-      type: Schema.Types.ObjectId,
-      ref: 'MatchingHandlerRequest',
-    },
-
-    matching_post_comment: {
-      type: Schema.Types.ObjectId,
-      ref: 'MatchingPostComment',
-    },
-
     price: {
       type: Number,
       required: true,
