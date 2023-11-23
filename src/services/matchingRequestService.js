@@ -1,37 +1,23 @@
-const MatchingRequest = require('../models/schemas/matchingPost/matchingPost');
+const MatchingRequest = require('../models/schemas/');
 const UserDog = require('../models/schemas/userDog/userDog');
 
 class MatchingRequestService {
   // 강아지 정보 불러오기
-  async getUserDogInfo(userId) {
-    const findUserDog = await UserDog.find({ user: userId });
+  getUserDogInfo() {
+    const { userId } = req.params;
+    const findUserDog = UserDog.find({ user: userId });
     return findUserDog;
   }
   // 매칭글 작성하기
-  async postMatchingRequest(
-    userId,
-    userDog,
-    price,
-    location,
-    locationDetail,
-    walkingDate,
-    walkingDuration,
-    text,
-    deletedAt,
-  ) {
-    const newMatchingPost = await MatchingRequest.create({
-      user: userId,
-      userDog,
-      price,
-      location,
-      locationDetail,
-      walkingDate,
-      walkingDuration,
-      text,
-      deletedAt,
-    });
+  postMatchingRequest() {
+    const newMatchingPost = MatchingRequest.create({});
+    // const newMatchingPost = MatchingRequest.find({})
+    //   .populate('user')
+    //   .populate('matchingPost')
+    //   .populate('review')
+    //   .sort({ createdAt: -1 }); // 인증글을 createdAt 기준으로 내림차순으로 정렬
 
-    return newMatchingPost;
+    // return findCertificationPost;
   }
 }
 

@@ -2,30 +2,9 @@ const MatchingRequestService = require('../services/matchingRequestService');
 
 const postMatchingRequest = async (req, res, next) => {
   try {
-    const { userId } = req.params;
-    const {
-      userDog,
-      price,
-      location,
-      locationDetail,
-      walkingDate,
-      walkingDuration,
-      text,
-      deletedAt,
-    } = req.body;
     const matchingRequestService = new MatchingRequestService();
-    const getUserDog = matchingRequestService.getUserDogInfo(userId);
-    const newMatchingRequest = matchingRequestService.postMatchingRequest(
-      userId,
-      userDog,
-      price,
-      location,
-      locationDetail,
-      walkingDate,
-      walkingDuration,
-      text,
-      deletedAt,
-    );
+    const getUserDog = matchingRequestService.getUserDogInfo;
+    const newMatchingRequest = matchingRequestService.postMatchingRequest();
 
     res.status(200).json({
       data: { getUserDog, newMatchingRequest },
