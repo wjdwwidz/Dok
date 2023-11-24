@@ -5,7 +5,7 @@ const {
 
 const router = Router();
 
-// 매칭 신청하기
-router.post('/matchingRequest', postMatchingRequest);
+// 매칭 신청하기 -> 수정필요
+//router.post('/matchingRequest', postMatchingRequest);
 
 module.exports = router;
