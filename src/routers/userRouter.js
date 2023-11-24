@@ -7,7 +7,18 @@ const router = Router();
 router.post('/signUp', userController.signUp);
 router.post('/signIn', userController.signIn);
 
-router.get('/:userId', userController.getUser);
+router.get('/', userController.getUser);
+// router.get(
+//   '/myInfo/matchings',
+//   jwtMiddleware.authenticateToken,
+//   userController.getMyMatchings,
+// );
+
+router.get(
+  '/myInfo',
+  jwtMiddleware.authenticateToken,
+  userController.getMyInfo,
+);
 
 router.patch(
   '/myInfo',
