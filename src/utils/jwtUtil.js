@@ -13,10 +13,10 @@ class JwtUtil {
     this.alg = 'HS256';
   }
 
-  encode(userId) {
+  encode(_id) {
     const token = jwt.sign(
       {
-        userId: userId,
+        _id: _id,
         iat: Math.floor(Date.now()) / 1000,
       },
       this.secret,
