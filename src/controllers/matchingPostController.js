@@ -109,10 +109,26 @@ const postRequest = async (req, res) => {
   });
 };
 
+//산책 매칭 확정하기
+const confirmRequest = async (req, res) => {
+  const { matchingPostId, commentId } = req.params;
+  const matchingPostService = new MatchingPostService();
+  const confirmRequest = await matchingPostService.confirmRequest(
+    matchingPostId,
+    commentId,
+  );
+
+  res.status(200).json({
+    data: { confirmRequest },
+    message: '산책 매칭이 확정되었습니다',
+  });
+};
+
 module.exports = {
   getMatchingPosts,
   getRequestLists,
   postRequest,
+  confirmRequest,
   getComments,
   postComment,
   updateComment,

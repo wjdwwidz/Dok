@@ -104,6 +104,21 @@ class MatchingPostService {
 
     return postRequest;
   }
+
+  //산책 요청 보내기
+  confirmRequest(matchingPostId, commentId) {
+    //해당 matchingPostId를 가지고 있는 comment document를 찾기
+    const comment = MatchingPostComment.findOne(
+      { _id: commentId },
+      { matchingPostId: matchingPostId },
+    );
+
+    console.log(comment);
+
+    //해당 document의 userid를 matchingPostId를 찾고 update
+
+    return;
+  }
 }
 
 module.exports = MatchingPostService;

@@ -21,13 +21,15 @@ const MatchingPostSchema = new Schema(
     },
 
     location: {
-      type: String,
+      type: {
+        requestText: String,
+        code: String,
+      },
       required: true,
     },
 
     locationDetail: {
       type: String,
-      required: true,
     },
 
     walkingDate: {

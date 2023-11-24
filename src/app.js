@@ -47,8 +47,8 @@ app.get('/', (req, res) => {
   res.send('Hello express !');
 });
 
-app.use('/matchingPostLists', matchingPostRouter); // 전체 게시글 불러오기
-app.use('/matchingPostDetail', matchingPostRouter); // 상세 정보 불러오기 ()
+app.use('/api/matchingPostLists', matchingPostRouter); // 전체 게시글 불러오기
+app.use('/api/matchingPostDetail', matchingPostRouter); // 상세 정보 불러오기 ()
 
 app.use('/api/certificationRouter', certificationPostRouter);
 
