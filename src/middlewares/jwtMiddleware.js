@@ -1,11 +1,11 @@
-const JwtUtil = require('../utils/jwtUtil');
-const dotenv = require('dotenv').config();
+// const JwtUtil = require('../utils/jwtUtil');
 const falsey = require('falsey');
-dotenv.config();
+const { jwtVerify } = require('jose');
+require('dotenv').config();
 
-const jwtUtil = new JwtUtil();
+// const jwtUtil = new JwtUtil();
 
-function authenticateToken(req, res, next) {
+async function authenticateToken(req, res, next) {
   const token = req.header('Bearer');
 
   if (falsey(token)) {
@@ -16,12 +16,12 @@ function authenticateToken(req, res, next) {
 
   jwtVerify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
     if (err) {
+      console.log(token);
       return res.status(401).json({ message: 'Unauthorized: Invalid token' });
     }
     req.userId = decoded.sub;
     next();
-    x;
   });
 }
 
-module.exports = authenticateToken;
+(module.exports = authenticateToken), jwtVerify;
