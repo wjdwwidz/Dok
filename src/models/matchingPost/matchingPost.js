@@ -50,6 +50,12 @@ const MatchingPostSchema = new Schema(
       default: '매칭중',
     },
 
+    matchingHandler: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
+    },
+
     deletedAt: {
       type: Date,
     },

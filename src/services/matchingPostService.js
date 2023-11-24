@@ -1,34 +1,44 @@
 const MatchingPost = require('../models/matchingPost/matchingPost');
 const MatchingPostComment = require('../models/matchingPostComment/matchingPostComment');
 const MatchingHandlerRequest = require('../models/matchingHandlerRequest/matchingHandlerRequest');
+const UserDog = require('../models/userDog/userDog');
 
 class MatchingPostService {
   //전체 매칭 글 가져오기  -> Error : user_dog의 populate 안됨
   // MatchingPostService
 
   async getMatchingPost(location, walkingDate) {
-    if (!location && !walkingDate) {
-      const findPost = await MatchingPost.find({}).populate('user');
-      // .populate('userDog');
-      return findPost;
-    } else if (!walkingDate) {
+    //if문 안에 각각의 메서드로 나눌것
+    if (!walkingDate) {
+      //코드를 파악하기 힘들어짐 (else if)
       //location 검색 string값이 같은거 조회
       const findPost = await MatchingPost.find({
-        location: location,
-      }).populate('user');
-      // .populate('userDog');
+        location: { $regex: /`${location}`/ },
+      })
+        .populate('user')
+        .populate('userDog');
       return findPost;
-    } else if (!location) {
+    }
+    if (!location) {
       //date 검색
       const findPost = await MatchingPost.find({
         walkingDate: { $gte: walkingDate },
-      }).populate('user');
-      // .populate('userDog');
+      })
+        .populate('user')
+        .populate('userDog');
+      return findPost;
+    }
+    if (!location && !walkingDate) {
+      //나중에 ts 변환 시 각각의 메서드로 분리 가능
+      const findPost = await MatchingPost.find({})
+        .populate('user')
+        .populate('userDog');
+
       return findPost;
     }
   }
 
-  // 댓글 가져오기 ✅
+  // 댓글 가져오기 -> 삭제된 댓글은 불러오지 않기
   async getAllComments(matchingPostId) {
     const findComments = await MatchingPostComment.find({
       matchingPostId: matchingPostId, //deletedAt이 찍힌 건 안가져오도록 하는 쿼리 필요!!
@@ -36,7 +46,7 @@ class MatchingPostService {
     return findComments;
   }
 
-  //댓글 작성하기 -> Error: POSTMAN 요청 / 응답 잘 됌, objectId 까지 생성 완료했는데 db에 저장이 안됨
+  //댓글 작성하기
   async postComment(matchingPostId, user, comment, parentCommentId) {
     try {
       const postComment = await MatchingPostComment.create({
