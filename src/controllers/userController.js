@@ -55,4 +55,14 @@ async function editUserInfo(req, res, next) {
   }
 }
 
-module.exports = { signUp, signIn, editUserInfo };
+async function getUser(req, res, next) {
+  const userId = req.params.userId;
+  try {
+    const user = await userService.getUser(userId);
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { signUp, signIn, editUserInfo, getUser };

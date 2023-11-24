@@ -70,4 +70,12 @@ async function editUserInfo(_id, userUpdateRequest) {
   return updatedUser;
 }
 
-module.exports = { createUser, signIn, editUserInfo };
+async function getUser(userId) {
+  const user = await User.findOne({ userId: userId });
+  if (falsey(user)) {
+    throw new NotFoundError(`존재하지 않는 아이디입니다. inputId: ${userId}`);
+  }
+  return user;
+}
+
+module.exports = { createUser, signIn, editUserInfo, getUser };
