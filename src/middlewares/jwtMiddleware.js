@@ -13,11 +13,11 @@ async function authenticateToken(req, res, next) {
 
   try {
     jwt = new JwtUtil().verify(token);
-    req.userId = jwt.userId;
+    req._id = jwt._id;
     next();
   } catch (err) {
     return res.status(401).json({ message: 'Unauthorized: Invalid token' });
   }
 }
 
-module.exports = { authenticateToken, jwtVerify };
+module.exports = { authenticateToken };
