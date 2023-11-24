@@ -7,9 +7,12 @@ const router = Router();
 router.post('/signUp', userController.signUp);
 router.post('/signIn', userController.signIn);
 
+router.get('/:userId', userController.getUser);
+
 router.patch(
   '/myInfo',
   jwtMiddleware.authenticateToken,
   userController.editUserInfo,
 );
+
 module.exports = router;
