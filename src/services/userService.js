@@ -49,33 +49,38 @@ async function signIn(res, userSignInRequest) {
 }
 
 async function editUserInfo(_id, userUpdateRequest) {
-  const filter = { _id: _id };
+  const encryptedPassword = await PasswordEncoder.hash(
+    userUpdateRequest.getPassword(),
+  );
+
   const update = {
-    $set: {
-      name: userUpdateRequest.getName(),
-      nickname: userUpdateRequest.getNickname(),
-      phoneNumber: userUpdateRequest.getPhoneNumber(),
-      address: userUpdateRequest.getAddress(),
-      password: userUpdateRequest.getPassword(),
-    },
+    name: userUpdateRequest.getName(),
+    nickname: userUpdateRequest.getNickname(),
+    phoneNumber: userUpdateRequest.getPhoneNumber(),
+    address: userUpdateRequest.getAddress(),
+    password: encryptedPassword,
   };
   const options = { new: true };
 
-  const updatedUser = await User.findOneAndUpdate(
-    filter,
-    update,
-    options,
-  ).exec();
+  const updatedUser = await User.findByIdAndUpdate(_id, update, options).exec();
 
   return updatedUser;
 }
 
 async function getUser(userId) {
-  const user = await User.findOne({ userId: userId });
+  const user = await User.findOne({ userId: userId }).exec();
   if (falsey(user)) {
     throw new NotFoundError(`존재하지 않는 아이디입니다. inputId: ${userId}`);
   }
   return user;
 }
 
-module.exports = { createUser, signIn, editUserInfo, getUser };
+async function getUserById(_id) {
+  const user = await User.findById(_id).exec();
+  if (falsey(user)) {
+    throw new NotFoundError(`존재하지 않는 아이디입니다. inputId: ${_id}`);
+  }
+  return user;
+}
+
+module.exports = { createUser, signIn, editUserInfo, getUser, getUserById };
