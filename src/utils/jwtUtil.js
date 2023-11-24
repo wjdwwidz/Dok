@@ -19,7 +19,7 @@ class JwtUtil {
         alg: this.alg,
       })
         .setProtectedHeader({ alg: this.alg })
-        .setSubject(userId)
+        .setAudience(userId)
         .setIssuedAt()
         .setExpirationTime('2h')
         .sign(this.secret);
