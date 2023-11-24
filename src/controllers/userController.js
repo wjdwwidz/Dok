@@ -43,12 +43,12 @@ async function signIn(req, res, next) {
 }
 
 async function editUserInfo(req, res, next) {
-  const token = req.headers.Bearer;
+  const userId = req.userId;
   const updateData = req.body;
   try {
     //여기서 updatedata는 어떤 형태의 객체인가?
     //어떤 식으로 updateData를 받아야 하는가?
-    const updatedUser = await userService.editUserInfo(token, updateData);
+    const updatedUser = await userService.editUserInfo(userId, updateData);
     res.status(201).json(updatedUser);
   } catch (error) {
     next(error);
