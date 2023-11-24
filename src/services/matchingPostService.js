@@ -1,3 +1,4 @@
+const NotFoundError = require('../errors/notFoundError');
 const MatchingPost = require('../models/matchingPost/matchingPost');
 const MatchingPostComment = require('../models/matchingPostComment/matchingPostComment');
 const MatchingHandlerRequest = require('../models/matchingHandlerRequest/matchingHandlerRequest');
@@ -8,12 +9,8 @@ class MatchingPostService {
   // MatchingPostService
 
   async getMatchingPost(location, walkingDate) {
-    console.log(typeof location);
-    console.log(typeof walkingDate);
     //if문 안에 각각의 메서드로 나눌것
     if (!walkingDate) {
-      //코드를 파악하기 힘들어짐 (else if)
-      //location 검색 string값이 같은거 조회
       const findPost = await MatchingPost.find({
         'location.code': {
           $regex: new RegExp(`${location.code}`),
@@ -21,6 +18,10 @@ class MatchingPostService {
       })
         .populate('user')
         .populate('userDog');
+
+      if (!findPost) {
+        throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+      }
       return findPost;
     }
 
@@ -31,17 +32,23 @@ class MatchingPostService {
       })
         .populate('user')
         .populate('userDog');
+
+      if (!findPost) {
+        throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+      }
       return findPost;
     }
 
+    //Error: !locaiton && walkingDate의 case가 적용되지 않음
     if (!location && !walkingDate) {
-      //여기가 갑자기 안돼는 에러?? 뭐지진짜 🔪
-      //나중에 ts 변환 시 각각의 메서드로 분리 가능
       console.log('none');
+      //콘솔이 찍히지 않음
       const findPost = await MatchingPost.find({})
         .populate('user')
         .populate('userDog');
-
+      if (!findPost) {
+        throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+      }
       return;
     }
   }
@@ -51,25 +58,26 @@ class MatchingPostService {
     const findComments = await MatchingPostComment.find({
       matchingPostId: matchingPostId, //deletedAt이 찍힌 건 안가져오도록 하는 쿼리 필요!!
     }).populate('user');
-    console.log(findComments);
+
+    if (!findComments) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    }
     return findComments;
   }
 
   //댓글 작성하기
   async postComment(matchingPostId, user, comment, parentCommentId) {
-    try {
-      const postComment = await MatchingPostComment.create({
-        matchingPostId,
-        user,
-        comment,
-        parentCommentId,
-      });
-      console.log(postComment);
-      return postComment;
-    } catch (error) {
-      console.error('Error while posting...', error);
-      throw error;
+    const postComment = await MatchingPostComment.create({
+      matchingPostId,
+      user,
+      comment,
+      parentCommentId,
+    });
+    if (!postComment) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
     }
+
+    return postComment;
   }
 
   //댓글 수정하기 댓글의 id값으로 찾은 후 update
@@ -83,6 +91,9 @@ class MatchingPostService {
       },
       { new: true },
     );
+    if (!updateComment) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    }
     return updateComment;
   }
 
@@ -92,6 +103,9 @@ class MatchingPostService {
       { _id: commentId },
       { deleted_at: new Date() },
     );
+    if (!deleteComment) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    }
     return deleteComment;
   }
 
@@ -100,7 +114,9 @@ class MatchingPostService {
     const findPostLists = await MatchingHandlerRequest.find({
       matchingPostId: matchingPostId,
     }).populate('user');
-
+    if (!findPostLists) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    }
     return findPostLists;
   }
 
@@ -110,7 +126,9 @@ class MatchingPostService {
       user,
       matchingPostId,
     });
-
+    if (!postRequest) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    }
     return postRequest;
   }
 
@@ -123,9 +141,6 @@ class MatchingPostService {
       matchingPostId: matchingPostId,
     });
 
-    //해당 document의 userid를 matchingPostId를 찾고 update
-    // console.log(comment.user);
-
     const confirmMatching = await MatchingPost.findOneAndUpdate(
       { _id: matchingPostId },
       {
@@ -133,6 +148,9 @@ class MatchingPostService {
         matchingStatus: '매칭 완료',
       },
     );
+    if (!confirmMatching) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    }
     return confirmMatching;
   }
 }
