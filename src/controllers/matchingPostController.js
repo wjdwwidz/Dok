@@ -9,7 +9,6 @@ const getMatchingPosts = async (req, res) => {
     walkingDate,
   );
 
-  console.log(findMatchingPosts);
   res.status(200).json({
     data: { findMatchingPosts },
     message: '전체 매칭 글입니다',
@@ -118,6 +117,7 @@ const confirmRequest = async (req, res) => {
     commentId,
   );
 
+  console.log(confirmRequest);
   res.status(200).json({
     data: { confirmRequest },
     message: '산책 매칭이 확정되었습니다',

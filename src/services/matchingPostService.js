@@ -8,17 +8,22 @@ class MatchingPostService {
   // MatchingPostService
 
   async getMatchingPost(location, walkingDate) {
+    console.log(typeof location);
+    console.log(typeof walkingDate);
     //if문 안에 각각의 메서드로 나눌것
     if (!walkingDate) {
       //코드를 파악하기 힘들어짐 (else if)
       //location 검색 string값이 같은거 조회
       const findPost = await MatchingPost.find({
-        location: { $regex: /`${location}`/ },
+        'location.code': {
+          $regex: new RegExp(`${location.code}`),
+        },
       })
         .populate('user')
         .populate('userDog');
       return findPost;
     }
+
     if (!location) {
       //date 검색
       const findPost = await MatchingPost.find({
@@ -28,13 +33,16 @@ class MatchingPostService {
         .populate('userDog');
       return findPost;
     }
+
     if (!location && !walkingDate) {
+      //여기가 갑자기 안돼는 에러?? 뭐지진짜 🔪
       //나중에 ts 변환 시 각각의 메서드로 분리 가능
+      console.log('none');
       const findPost = await MatchingPost.find({})
         .populate('user')
         .populate('userDog');
 
-      return findPost;
+      return;
     }
   }
 
@@ -43,6 +51,7 @@ class MatchingPostService {
     const findComments = await MatchingPostComment.find({
       matchingPostId: matchingPostId, //deletedAt이 찍힌 건 안가져오도록 하는 쿼리 필요!!
     }).populate('user');
+    console.log(findComments);
     return findComments;
   }
 
@@ -87,8 +96,8 @@ class MatchingPostService {
   }
 
   // 해당 게시글의 산책 요청 리스트 가져오기
-  getRequestLists(matchingPostId) {
-    const findPostLists = MatchingHandlerRequest.find({
+  async getRequestLists(matchingPostId) {
+    const findPostLists = await MatchingHandlerRequest.find({
       matchingPostId: matchingPostId,
     }).populate('user');
 
@@ -96,8 +105,8 @@ class MatchingPostService {
   }
 
   //산책 요청 보내기
-  postRequest(user, matchingPostId) {
-    const postRequest = MatchingHandlerRequest.create({
+  async postRequest(user, matchingPostId) {
+    const postRequest = await MatchingHandlerRequest.create({
       user,
       matchingPostId,
     });
@@ -105,19 +114,26 @@ class MatchingPostService {
     return postRequest;
   }
 
-  //산책 요청 보내기
-  confirmRequest(matchingPostId, commentId) {
-    //해당 matchingPostId를 가지고 있는 comment document를 찾기
-    const comment = MatchingPostComment.findOne(
-      { _id: commentId },
-      { matchingPostId: matchingPostId },
-    );
+  //산책 요청 확정하기
 
-    console.log(comment);
+  async confirmRequest(matchingPostId, commentId) {
+    // 해당 matchingPostId를 가지고 있는 comment document를 찾기
+    const comment = await MatchingPostComment.findOne({
+      _id: commentId,
+      matchingPostId: matchingPostId,
+    });
 
     //해당 document의 userid를 matchingPostId를 찾고 update
+    // console.log(comment.user);
 
-    return;
+    const confirmMatching = await MatchingPost.findOneAndUpdate(
+      { _id: matchingPostId },
+      {
+        matchingHandler: comment.user,
+        matchingStatus: '매칭 완료',
+      },
+    );
+    return confirmMatching;
   }
 }
 

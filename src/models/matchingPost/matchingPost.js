@@ -22,7 +22,7 @@ const MatchingPostSchema = new Schema(
 
     location: {
       type: {
-        requestText: String,
+        text: String,
         code: String,
       },
       required: true,
@@ -42,7 +42,7 @@ const MatchingPostSchema = new Schema(
       required: true,
     },
 
-    text: {
+    requestText: {
       type: String,
       required: true,
     },
