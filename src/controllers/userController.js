@@ -1,6 +1,7 @@
 const userService = require('../services/userService');
 const UserCreateRequest = require('../dtos/users/userCreateRequest');
 const UserSignInRequest = require('../dtos/users/userSignInRequest');
+const UserUpdateRequest = require('../dtos/users/userUpdateRequest');
 
 async function signUp(req, res, next) {
   const {
@@ -43,12 +44,11 @@ async function signIn(req, res, next) {
 }
 
 async function editUserInfo(req, res, next) {
-  const userId = req.userId;
-  const updateData = req.body;
+  const _id = req._id;
+
   try {
-    //여기서 updatedata는 어떤 형태의 객체인가?
-    //어떤 식으로 updateData를 받아야 하는가?
-    const updatedUser = await userService.editUserInfo(userId, updateData);
+    const userUpdateRequest = new UserUpdateRequest(req.body);
+    const updatedUser = await userService.editUserInfo(_id, userUpdateRequest);
     res.status(201).json(updatedUser);
   } catch (error) {
     next(error);

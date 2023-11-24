@@ -48,25 +48,26 @@ async function signIn(res, userSignInRequest) {
   return user;
 }
 
-//how to make editUserInfo function?
-//1. get userId from token
-//2. get udpateData from req.body
-//3. update user information
-//4. return user
+async function editUserInfo(_id, userUpdateRequest) {
+  const filter = { _id: _id };
+  const update = {
+    $set: {
+      name: userUpdateRequest.getName(),
+      nickname: userUpdateRequest.getNickname(),
+      phoneNumber: userUpdateRequest.getPhoneNumber(),
+      address: userUpdateRequest.getAddress(),
+      password: userUpdateRequest.getPassword(),
+    },
+  };
+  const options = { new: true };
 
-async function editUserInfo(userId, udpateData) {
-  console.log(userId);
-  console.log(udpateData);
-  try {
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      throw new NotFoundError(`존재하지 않는 아이디입니다. inputId: ${userId}`);
-    }
-    const updatedUser = await user.updateOne(user, udpateData);
-    return updatedUser;
-  } catch (error) {
-    next(error);
-  }
+  const updatedUser = await User.findOneAndUpdate(
+    filter,
+    update,
+    options,
+  ).exec();
+
+  return updatedUser;
 }
 
 module.exports = { createUser, signIn, editUserInfo };
