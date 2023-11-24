@@ -21,13 +21,15 @@ const MatchingPostSchema = new Schema(
     },
 
     location: {
-      type: String,
+      type: {
+        text: String,
+        code: String,
+      },
       required: true,
     },
 
     locationDetail: {
       type: String,
-      required: true,
     },
 
     walkingDate: {
@@ -40,7 +42,7 @@ const MatchingPostSchema = new Schema(
       required: true,
     },
 
-    text: {
+    requestText: {
       type: String,
       required: true,
     },
@@ -48,6 +50,12 @@ const MatchingPostSchema = new Schema(
     matchingStatus: {
       type: String,
       default: '매칭중',
+    },
+
+    matchingHandler: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      default: null,
     },
 
     deletedAt: {

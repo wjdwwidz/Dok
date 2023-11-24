@@ -1,5 +1,5 @@
-const MatchingRequest = require('../models/schemas/matchingPost/matchingPost');
-const UserDog = require('../models/schemas/userDog/userDog');
+const MatchingRequest = require('../models/matchingPost/matchingPost');
+const UserDog = require('../models//userDog/userDog');
 
 class MatchingRequestService {
   // 강아지 정보 불러오기

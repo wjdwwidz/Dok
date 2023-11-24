@@ -7,6 +7,7 @@ const {
   deleteComment,
   getRequestLists,
   postRequest,
+  confirmRequest,
 } = require('../controllers/matchingPostController');
 
 const router = Router();
@@ -24,10 +25,10 @@ router.put('/:commentId', updateComment); //댓글 수정하기
 router.delete('/:commentId', deleteComment); //댓글 삭제하기
 
 //산책 요청 기능
-router.get('/:matchingPostId', getRequestLists); // 산책 요청 리스트 가져오기
-router.post('/:user/:matching_post_id', postRequest); //산책 요청하기
-//산책 요청 확정하기 -> 매칭 status 변경
 
-//요청하기를 누르면 matchingPost_id(params)랑 누른 사람의 id(body) 둘 다 보내야할듯
+router.get('/:matchingPostId', getRequestLists); // 산책 요청 리스트 가져오기
+router.post('/:user/:matchingPostId', postRequest); //산책 요청하기
+//산책 요청 확정하기 -> 매칭 status 변경, matchingHaler에 userId 저장
+router.put('/:matchingPostId/:commentId', confirmRequest);
 
 module.exports = router;
