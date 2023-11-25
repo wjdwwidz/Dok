@@ -10,9 +10,16 @@ require('dotenv').config();
 const app = express();
 
 const userRouter = require('./routers/userRouter');
+
+require('dotenv').config();
+// const cors = require('cors');
+
+const dbFill = require('./dbFill.js');
+
 const matchingPostRouter = require('./routers/matchingPostRouter.js');
 const certificationPostRouter = require('./routers/certificationRouter');
 const errorHandler = require('./middlewares/errorHandler');
+const matchingRequestRouter = require('./routers/matchingRequestRouter.js');
 
 mongoose
   .connect(process.env.MONGO_DB_URL)
@@ -37,11 +44,14 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/users', userRouter);
-app.use('/matchingPostLists', matchingPostRouter); // 전체 게시글 불러오기
-app.use('/matchingPostDetail', matchingPostRouter); //댓글
-app.use('/api/certificationRouter', certificationPostRouter);
+app.use('/api/matchingPostLists', matchingPostRouter); // 전체 게시글 불러오기
+app.use('/api/matchingPostDetail', matchingPostRouter); // 상세 정보 불러오기 ()
+
+app.use('/api/matchingRequestRouter', matchingRequestRouter); // 매칭글 신청하기
+app.use('/api/certificationRouter', certificationPostRouter); // 인증글
 
 app.use(errorHandler);
 app.listen(process.env.PORT, () => {
+  // dbFill();
   console.log(`Express server starting on port ${process.env.PORT}`);
 });
