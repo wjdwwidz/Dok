@@ -43,4 +43,4 @@ const userDogSchema = new Schema({
 userDogSchema.set('timestamps', true);
 const UserDog = model('UserDog', userDogSchema);
 
-module.exports = UserDog;
+module.exports = { UserDog };
