@@ -10,12 +10,6 @@ require('dotenv').config();
 const app = express();
 
 const userRouter = require('./routers/userRouter');
-
-require('dotenv').config();
-// const cors = require('cors');
-
-const dbFill = require('./dbFill.js');
-
 const matchingPostRouter = require('./routers/matchingPostRouter.js');
 const certificationPostRouter = require('./routers/certificationRouter');
 const errorHandler = require('./middlewares/errorHandler');
@@ -30,7 +24,7 @@ mongoose
     console.error('MongoDB 연결 실패: ', error);
   });
 
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
@@ -52,6 +46,5 @@ app.use('/api/certificationRouter', certificationPostRouter); // 인증글
 
 app.use(errorHandler);
 app.listen(process.env.PORT, () => {
-  // dbFill();
   console.log(`Express server starting on port ${process.env.PORT}`);
 });
