@@ -4,10 +4,11 @@ const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 const router = Router();
 
+router.get('/', userController.getUser);
+// router.get('/myInfo/matchings', userController.getMyMatchings);
 router.post('/signUp', userController.signUp);
 router.post('/signIn', userController.signIn);
 
-router.get('/', userController.getUser);
 // router.get(
 //   '/myInfo/matchings',
 //   jwtMiddleware.authenticateToken,
