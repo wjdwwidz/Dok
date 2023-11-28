@@ -229,51 +229,6 @@ class CertificationPostService {
 
     return updatedReview;
   }
-
-  // 검색기능
-  // 지역 선택
-  locationCertificationPost() {
-    const { location } = req.body;
-
-    const locationCertificationPost = CertificationPost.find({
-      location: location,
-    })
-      .populate('user')
-      .populate('matchingPost')
-      .populate('review');
-    const getCertificationPosts = locationCertificationPost.find({
-      deletedAt: null,
-    });
-
-    return getCertificationPosts;
-  }
-
-  // 날짜 선택
-  dateCertificationPost(createdAt) {
-    const dateCertificationPost = CertificationPost.find({
-      createdAt: createdAt,
-    })
-      .populate('user')
-      .populate('matchingPost');
-    const getCertificationPosts = dateCertificationPost.find({
-      deletedAt: null,
-    });
-
-    return getCertificationPosts;
-  }
-
-  // 오래된순 (기본은 최신순)
-  getCertificationPosts() {
-    const findCertificationPost = CertificationPost.find({})
-      .populate('user')
-      .populate('matchingPost')
-      .sort({ createdAt: 1 }); // 인증글을 createdAt 기준으로 오름차순으로 정렬
-    const getCertificationPosts = findCertificationPost.find({
-      deletedAt: null,
-    });
-
-    return getCertificationPosts;
-  }
 }
 
 module.exports = new CertificationPostService();

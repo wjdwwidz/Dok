@@ -18,6 +18,7 @@ router.post(
 );
 // 전체 인증글 조회
 router.get('/allCertificationPost', getCertificationPosts);
+
 // 상세 인증글 조회
 router.get('/certificationPostDetails/:postId', getCertificationPostDetails);
 // 인증글 수정

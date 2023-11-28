@@ -107,43 +107,6 @@ const putCertificationPostReviews = async (req, res, next) => {
   }
 };
 
-// 검색기능
-// 지역 선택
-const getLocationCertificationPost = async (req, res, next) => {
-  try {
-    const { location } = req.body;
-    const findLocation =
-      await CertificationPostService.locationCertificationPost(location);
-
-    res.status(200).json(findLocation);
-  } catch (err) {
-    next(err);
-  }
-};
-
-// 날짜 선택
-const getDateCertificationPost = async (req, res, next) => {
-  try {
-    const { createdAt } = req.body;
-    const findDate =
-      await CertificationPostService.dateCertificationPost(createdAt);
-
-    res.status(200).json(findDate);
-  } catch (err) {
-    next(err);
-  }
-};
-
-// 오래된순
-const getOldCertificationPost = async (req, res, next) => {
-  try {
-    const findOld = await CertificationPostService.getCertificationPosts();
-
-    res.status(200).json(findOld);
-  } catch (err) {
-    next(err);
-  }
-};
 module.exports = {
   getCertificationPosts,
   getCertificationPostDetails,
@@ -151,7 +114,4 @@ module.exports = {
   putCertificationPosts,
   postCertificationPostReviews,
   putCertificationPostReviews,
-  getLocationCertificationPost,
-  getDateCertificationPost,
-  getOldCertificationPost,
 };

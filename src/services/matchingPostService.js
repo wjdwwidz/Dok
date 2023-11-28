@@ -4,10 +4,11 @@ const MatchingPostComment = require('../models/matchingPostComment/matchingPostC
 const MatchingHandlerRequest = require('../models/matchingHandlerRequest/matchingHandlerRequest');
 
 class MatchingPostService {
+  //🚩날짜 검색 고치는중...
   //전체 매칭 글 가져오기  -> 삭제된 게시글은 가져오지 않기 , 페이지네이션
 
-  async getMatchingPost(location, walkingDate, page, perPage) {
-    // if문 안에 각각의 메서드로 나눌것
+  async getMatchingPost(locationCode, walkingDate, page, perPage) {
+    //if문 안에 각각의 메서드로 나눌것
     const date = new Date();
 
     await MatchingPost.updateMany(
@@ -16,12 +17,55 @@ class MatchingPostService {
     );
 
     //둘 다 있을 때
-    if (walkingDate && location) {
+
+    if (walkingDate && locationCode) {
+      const walkingDateObj = new Date(walkingDate);
+
+      console.log(walkingDateObj);
       const findPost = await MatchingPost.find({
         'location.code': {
-          $regex: new RegExp(`${location.code}`),
+          $regex: new RegExp(`${locationCode}`),
         },
-        walkingDate: { $gte: walkingDate },
+        walkingDate: {
+          $gte: walkingDateObj,
+          $lt: new Date(walkingDateObj.getTime() + 24 * 60 * 60 * 1000),
+        },
+        deletedAt: null,
+      })
+        .skip(perPage * (page - 1))
+        .limit(perPage)
+        .populate('user')
+        .populate('userDog');
+
+      if (!findPost) {
+        throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+      }
+      return;
+    }
+
+    // const findPost = await MatchingPost.find({
+    //   'location.code': {
+    //     $regex: new RegExp(`${locationCode}`),
+    //   },
+    //   walkingDate: { $gte: walkingDate, $lt: walkingDate + 1 },
+    //   deletedAt: null,
+    // })
+    // .skip(perPage * (page - 1))
+    // .limit(perPage)
+    // .populate('user')
+    // .populate('userDog');
+
+    //   if (!findPost) {
+    //     throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    //   }
+    //   return findPost;
+    // }
+
+    if (!walkingDate && locationCode) {
+      const findPost = await MatchingPost.find({
+        'location.code': {
+          $regex: new RegExp(`${locationCode}`),
+        },
         deletedAt: null,
       })
         .skip(perPage * (page - 1))
@@ -35,29 +79,11 @@ class MatchingPostService {
       return findPost;
     }
 
-    if (!walkingDate && location) {
-      const findPost = await MatchingPost.find({
-        'location.code': {
-          $regex: new RegExp(`${location.code}`),
-        },
-        deletedAt: null,
-      })
-        .skip(perPage * (page - 1))
-        .limit(perPage)
-        .populate('user')
-        .populate('userDog');
-
-      if (!findPost) {
-        throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
-      }
-      return findPost;
-    }
-
-    if (!location && walkingDate) {
+    if (!locationCode && walkingDate) {
       //date 검색
 
       const findPost = await MatchingPost.find({
-        walkingDate: { $gte: walkingDate },
+        walkingDate: { $gte: walkingDate, $lt: walkingDate + 1 },
         deletedAt: null,
       })
         .skip(perPage * (page - 1))
@@ -71,7 +97,7 @@ class MatchingPostService {
       return findPost;
     }
 
-    if (!location && !walkingDate) {
+    if (!locationCode && !walkingDate) {
       const findPost = await MatchingPost.find({ deletedAt: null })
         .skip(perPage * (page - 1))
         .limit(perPage)
@@ -87,12 +113,10 @@ class MatchingPostService {
 
   //매칭 상세정보 불러오기 -> 삭제된 상제 정보는 가져오지 않기
   async getMatchingPostDetails(matchingPostId) {
-    const findDetails = await MatchingPost.find(
-      {
-        _id: matchingPostId,
-      },
-      { deletedAt: null },
-    )
+    const findDetails = await MatchingPost.find({
+      _id: matchingPostId,
+      deletedAt: null,
+    })
       .populate('user')
       .populate('userDog');
 
@@ -187,16 +211,17 @@ class MatchingPostService {
   //산책 요청 확정하기
 
   async confirmRequest(matchingPostId, handlerRequestId) {
-    // 해당 matchingPostId를 가지고 있는 comment document를 찾기
-    const comment = await MatchingHandlerRequest.findOne({
-      _id: handlerRequestId,
-      matchingPostId: matchingPostId,
-    });
+    // 해당 matchingPostId와 user id를 가지고 있는 request document를 찾기
+    // const comment = await MatchingHandlerRequest.findOne({
+    //   user: handlerRequestId,
+    //   matchingPostId: matchingPostId,
+    // });
 
+    // console.log(comment.user);
     const confirmMatching = await MatchingPost.findOneAndUpdate(
-      { _id: matchingPostId },
+      { _id: matchingPostId, matchingStatus: { $not: { $eq: 'failed' } } },
       {
-        matchingHandler: comment.user,
+        matchingHandler: handlerRequestId,
         matchingStatus: 'completed',
       },
     );
@@ -204,6 +229,7 @@ class MatchingPostService {
       throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
     }
     return confirmMatching;
+    // return;
   }
 }
 
