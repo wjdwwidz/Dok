@@ -17,11 +17,7 @@ router.post('/signIn', userController.signIn);
 //   userController.getMyMatchings,
 // );
 
-router.get(
-  '/myInfo',
-  jwtMiddleware.authenticateToken,
-  userController.getMyInfo,
-);
+router.get('/myInfo', userController.getMyInfo);
 
 router.patch(
   '/myInfo',
