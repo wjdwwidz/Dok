@@ -3,6 +3,7 @@ const {
   matchingRequest,
   updateMatchingRequest,
 } = require('../controllers/matchingRequestController');
+const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 const router = Router();
 
