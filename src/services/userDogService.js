@@ -5,4 +5,18 @@ async function getUserDogByUserId(_id) {
   return findDog;
 }
 
-module.exports = { getUserDogByUserId };
+async function createUserDog(userDogRequest) {
+  const UserDog = new UserDog({
+    //user: userDogRequest.getUserId(),
+    dogName: userDogRequest.getDogName(),
+    dogImg: userDogRequest.getDogImg(),
+    birth: userDogRequest.getBirth(),
+    dogType: userDogRequest.getDogType(),
+    gender: userDogRequest.getGender(),
+    personality: userDogRequest.getPersonality(),
+  });
+  const userDog = await UserDog.save();
+  return userDog;
+}
+
+module.exports = { getUserDogByUserId, createUserDog };
