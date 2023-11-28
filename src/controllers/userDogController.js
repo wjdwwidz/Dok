@@ -1,13 +1,12 @@
 const userDogService = require('../services/userDogService');
 const userService = require('../services/userService');
-const UserDogCreateRequest = require('../dtos/userDogs/userDogCreateRequest');
+const UserDogCreateRequest = require('../dtos/users/userDogCreateRequest');
 
 async function createUserDog(req, res, next) {
   const _id = req._id;
   const dog = req.body;
 
   try {
-    //TODO
     const user = await userService.getUserById(_id);
     const userDogRequest = new UserDogCreateRequest(user, dog);
     const userDog = await userDogService.createUserDog(userDogRequest);
