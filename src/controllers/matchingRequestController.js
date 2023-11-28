@@ -23,7 +23,7 @@ const postMatchingRequest = async (req, res, next) => {
       locationDetail,
       walkingDate,
       walkingDuration,
-      text,
+      requestText,
       deletedAt,
     } = req.body;
 
@@ -35,7 +35,7 @@ const postMatchingRequest = async (req, res, next) => {
       locationDetail,
       walkingDate,
       walkingDuration,
-      text,
+      requestText,
       deletedAt,
     );
 

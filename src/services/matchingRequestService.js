@@ -16,7 +16,7 @@ class MatchingRequestService {
     locationDetail,
     walkingDate,
     walkingDuration,
-    text,
+    requestText,
     deletedAt,
     // dto 사용하기.
   ) {
@@ -28,7 +28,7 @@ class MatchingRequestService {
       locationDetail,
       walkingDate,
       walkingDuration,
-      text,
+      requestText,
       deletedAt,
     });
 
