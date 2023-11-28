@@ -143,13 +143,12 @@ class CertificationPostService {
   }
 
   // 인증글 수정
-  deleteCertificationPost(certificationPostId, Data) {
+  updateCertificationPost(certificationPostId, Data) {
     const updatePost = CertificationPost.findOneAndUpdate(
       {
         _id: certificationPostId,
       },
       {
-        deletedAt: Date.now(),
         Data,
       },
     );

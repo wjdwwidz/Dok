@@ -58,7 +58,7 @@ const putCertificationPosts = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const Data = req.body;
-    const newPost = await CertificationPostService.putCertificationPostReview(
+    const newPost = await CertificationPostService.updateCertificationPost(
       userId,
       Data,
     );
