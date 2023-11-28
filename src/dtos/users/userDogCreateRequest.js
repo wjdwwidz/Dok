@@ -1,8 +1,7 @@
 //const { BadRequestError } = require('../../errors/badReqestError');
 class UserDogCreateRequest {
   constructor(user, dogName, dogImg, birth, dogType, gender, personality) {
-    this.validate(user, dogName, dogImg, birth, dogType, gender, personality);
-
+    //this.validate(user, dogName, dogImg, birth, dogType, gender, personality);
     this.user = user;
     this.dogName = dogName;
     this.dogImg = dogImg;
