@@ -2,18 +2,23 @@ const { BadRequestError } = require('../../errors/badReqestError');
 
 class UserUpdateRequest {
   constructor(body) {
+    const address = {
+      text: body.address.text,
+      code: body.address.code,
+    };
+
     this.verify(
       body.password,
       body.confirmPassword,
       body.name,
-      body.address,
+      address,
       body.phoneNumber,
       body.nickname,
     );
     this.password = body.password;
     this.confirmPassword = body.confirmPassword;
     this.name = body.name;
-    this.address = body.address;
+    this.address = address;
     this.phoneNumber = body.phoneNumber;
     this.nickname = body.nickname;
   }
@@ -27,7 +32,7 @@ class UserUpdateRequest {
       throw new BadRequestError('이름을 입력해주세요.');
     }
 
-    if (!address) {
+    if (!address || !address.text) {
       throw new BadRequestError('주소를 입력해주세요.');
     }
 
