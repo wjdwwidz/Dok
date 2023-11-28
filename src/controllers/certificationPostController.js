@@ -3,13 +3,18 @@ const CertificationPostService = require('../services/certificationPostService')
 //전체 인증글 조회
 const getCertificationPosts = async (req, res, next) => {
   try {
-    const { matchingPost } = req.body;
-    const { page = 1, perPage = 3 } = req.query;
+    const {
+      page = 1,
+      perPage = 3,
+      locationCode = null,
+      walkingDate = null,
+    } = req.query;
     const findCertificationPosts =
       await CertificationPostService.getCertificationPosts(
-        matchingPost,
         page,
         perPage,
+        locationCode,
+        walkingDate,
       );
 
     res.status(200).json(findCertificationPosts);
@@ -24,7 +29,7 @@ const getCertificationPostDetails = async (req, res, next) => {
     const { postId } = req.params;
     const findCertificationPostDetails =
       await CertificationPostService.getCertificationPostDetail(postId);
-
+    console.log(findCertificationPostDetails);
     res.status(200).json(findCertificationPostDetails);
   } catch (err) {
     next(err);
@@ -35,7 +40,7 @@ const getCertificationPostDetails = async (req, res, next) => {
 const postCertificationPosts = async (req, res, next) => {
   try {
     const { userId, matchingPost } = req.params;
-    const { certificationImg, sublocation, postText, review } = req.body;
+    const { certificationImg, sublocation, postText } = req.body;
     const newCertificationPost =
       await CertificationPostService.postCertificationPost(
         userId,
@@ -43,7 +48,6 @@ const postCertificationPosts = async (req, res, next) => {
         certificationImg,
         sublocation,
         postText,
-        review,
       );
 
     console.log(newCertificationPost);
@@ -56,10 +60,10 @@ const postCertificationPosts = async (req, res, next) => {
 // 인증글 수정
 const putCertificationPosts = async (req, res, next) => {
   try {
-    const { userId } = req.params;
+    const _id = req._id;
     const Data = req.body;
     const newPost = await CertificationPostService.updateCertificationPost(
-      userId,
+      _id,
       Data,
     );
 
@@ -88,11 +92,12 @@ const postCertificationPostReviews = async (req, res, next) => {
 // 리뷰 수정
 const putCertificationPostReviews = async (req, res, next) => {
   try {
-    const { certificationPostId } = req.params;
-    const { review } = req.body;
+    const _id = req._id;
+    const { matchingPost, review } = req.body;
     const newReview =
       await CertificationPostService.postCertificationPostReview(
-        certificationPostId,
+        _id,
+        matchingPost,
         review,
       );
 
