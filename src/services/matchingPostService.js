@@ -109,7 +109,8 @@ class MatchingPostService {
       deletedAt: null,
     }).populate('user');
 
-    if (!findComments) {
+    console.log(findComments);
+    if (findComments.length === 0) {
       throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
     }
     return findComments;
@@ -122,7 +123,8 @@ class MatchingPostService {
       user,
       comment,
       parentCommentId,
-    });
+    }).populate(user);
+
     if (!postComment) {
       throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
     }
