@@ -1,6 +1,8 @@
 const { Router } = require('express');
 const userController = require('../controllers/userController');
+const userDogController = require('../controllers/userDogController');
 const jwtMiddleware = require('../middlewares/jwtMiddleware');
+//const { UserDog } = require('../models/user/userDog');
 
 const router = Router();
 
@@ -25,6 +27,12 @@ router.patch(
   '/myInfo',
   jwtMiddleware.authenticateToken,
   userController.editUserInfo,
+);
+
+router.post(
+  '/myDog',
+  jwtMiddleware.authenticateToken,
+  userDogController.createUserDog,
 );
 
 module.exports = router;
