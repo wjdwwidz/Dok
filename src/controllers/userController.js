@@ -2,6 +2,7 @@ const UserCreateRequest = require('../dtos/users/userCreateRequest');
 const UserSignInRequest = require('../dtos/users/userSignInRequest');
 const UserUpdateRequest = require('../dtos/users/userUpdateRequest');
 const MyInfoResponse = require('../dtos/users/myInfoResponse');
+const userService = require('../services/userService');
 
 async function signUp(req, res, next) {
   const {
@@ -45,7 +46,6 @@ async function signIn(req, res, next) {
 
 async function editUserInfo(req, res, next) {
   const _id = req._id;
-
   try {
     const userUpdateRequest = new UserUpdateRequest(req.body);
     const updatedUser = await userService.editUserInfo(_id, userUpdateRequest);
