@@ -36,4 +36,4 @@ class MatchingRequestService {
   }
 }
 
-module.exports = MatchingRequestService;
+module.exports = new MatchingRequestService();
