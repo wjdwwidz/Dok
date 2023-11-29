@@ -18,7 +18,10 @@ const userSchema = new Schema({
     required: true,
   },
   address: {
-    type: String,
+    type: {
+      text: String,
+      code: String,
+    },
     required: false, // 기본값이 false
   },
   phoneNumber: {

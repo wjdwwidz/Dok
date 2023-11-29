@@ -1,9 +1,8 @@
-const userService = require('../services/userService');
-const userDogService = require('../services/userDogService');
 const UserCreateRequest = require('../dtos/users/userCreateRequest');
 const UserSignInRequest = require('../dtos/users/userSignInRequest');
 const UserUpdateRequest = require('../dtos/users/userUpdateRequest');
 const MyInfoResponse = require('../dtos/users/myInfoResponse');
+const userService = require('../services/userService');
 
 async function signUp(req, res, next) {
   const {
@@ -47,7 +46,6 @@ async function signIn(req, res, next) {
 
 async function editUserInfo(req, res, next) {
   const _id = req._id;
-
   try {
     const userUpdateRequest = new UserUpdateRequest(req.body);
     const updatedUser = await userService.editUserInfo(_id, userUpdateRequest);
@@ -72,9 +70,9 @@ async function getMyInfo(req, res, next) {
   try {
     const user = await userService.getUserById(_id);
     const userDogs = await userDogService.getUserDogByUserId(_id);
+    const myInfoResponse = new MyInfoResponse(user, userDogs);
     // TODO: MyInfoResponse DTO를 만들어서 반환하도록 수정
     // user정보, 개 정보 함께 내려줘야함.
-    const myInfoResponse = new MyInfoResponse(user, userDogs);
     res.status(200).json(myInfoResponse);
   } catch (error) {
     next(error);
