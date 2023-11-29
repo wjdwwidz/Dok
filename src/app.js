@@ -43,9 +43,9 @@ app.get('/api', (req, res) => {
 });
 app.use('/api/main', mainRouter);
 app.use('/api/users', userRouter);
+app.use('/api/myPage', myPageRouter);
 app.use('/api/matchingPostLists', matchingPostRouter); // 전체 게시글 불러오기
 app.use('/api/matchingPostDetail', matchingPostRouter); // 상세 정보 불러오기 ()
-
 app.use('/api/matchingRequestRouter', matchingRequestRouter); // 매칭글 신청하기
 app.use('/api/certificationRouter', certificationPostRouter); // 인증글
 
