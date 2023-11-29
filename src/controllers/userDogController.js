@@ -24,4 +24,15 @@ async function createUserDog(req, res, next) {
   }
 }
 
-module.exports = { createUserDog };
+async function getMyDog(req, res, next) {
+  const _id = req.params._id;
+  try {
+    const user = await userService.getUserById(_id);
+    const userDog = await userDogService.getUserDogByUserId(user);
+    res.status(200).json(userDog);
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { createUserDog, getMyDog };
