@@ -6,7 +6,7 @@ async function getUserDogByUserId(_id) {
 }
 
 async function createUserDog(userDogRequest) {
-  const UserDog = new UserDog({
+  const userDog = new UserDog({
     //user: userDogRequest.getUserId(),
     dogName: userDogRequest.getDogName(),
     dogImg: userDogRequest.getDogImg(),
@@ -15,7 +15,8 @@ async function createUserDog(userDogRequest) {
     gender: userDogRequest.getGender(),
     personality: userDogRequest.getPersonality(),
   });
-  const userDog = await UserDog.save();
+
+  await userDog.save();
   return userDog;
 }
 
