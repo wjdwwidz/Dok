@@ -4,7 +4,6 @@ const User = require('../models/user/user');
 const PasswordEncoder = require('../utils/passwordEncoder');
 const JwtUtil = require('../utils/jwtUtil');
 const falsey = require('falsey');
-const { none } = require('../models/multer');
 
 async function createUser(userCreateRequest) {
   const encryptedPassword = await PasswordEncoder.hash(
