@@ -49,6 +49,7 @@ async function signIn(res, userSignInRequest) {
     maxAge: 2 * 60 * 60 * 1000,
     sameSite: 'none',
   });
+  res.header('Bearer', ` ${token}`);
   return user;
 }
 
