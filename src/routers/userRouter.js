@@ -1,29 +1,33 @@
 const { Router } = require('express');
 const userController = require('../controllers/userController');
+const userDogController = require('../controllers/userDogController');
 const jwtMiddleware = require('../middlewares/jwtMiddleware');
 
 const router = Router();
 
+router.get('/', userController.getUser);
+router.get('/myInfo', userController.getMyInfo);
+router.get('/myDog', userDogController.getMyDog);
+
 router.post('/signUp', userController.signUp);
 router.post('/signIn', userController.signIn);
 
-router.get('/', userController.getUser);
+router.patch(
+  '/myInfo',
+  jwtMiddleware.authenticateToken,
+  userController.editUserInfo,
+);
+
 // router.get(
 //   '/myInfo/matchings',
 //   jwtMiddleware.authenticateToken,
 //   userController.getMyMatchings,
 // );
 
-router.get(
-  '/myInfo',
+router.post(
+  '/myDog',
   jwtMiddleware.authenticateToken,
-  userController.getMyInfo,
-);
-
-router.patch(
-  '/myInfo',
-  jwtMiddleware.authenticateToken,
-  userController.editUserInfo,
+  userDogController.createUserDog,
 );
 
 module.exports = router;

@@ -21,6 +21,8 @@ class MatchingRequestService {
     // dto 사용하기.
   ) {
     const findUserDog = await UserDog.find({ user: userId });
+    // console.log(findUserDog);
+    // console.log(findUserDog[0]._id);
     const newMatchingPost = await MatchingRequest.create({
       user: userId,
       userDog: findUserDog[0]._id,
@@ -37,6 +39,36 @@ class MatchingRequestService {
     }
 
     return newMatchingPost;
+  }
+  // 매칭글 수정하기
+  async putMatchingRequest(
+    _id,
+    price,
+    location,
+    locationDetail,
+    walkingDate,
+    walkingDuration,
+    requestText,
+  ) {
+    const updateMatchingRequest = await MatchingRequest.findOneAndUpdate(
+      {
+        user: _id,
+      },
+      {
+        price,
+        location,
+        locationDetail,
+        walkingDate,
+        walkingDuration,
+        requestText,
+      },
+    );
+
+    if (!updateMatchingRequest) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    }
+
+    return updateMatchingRequest;
   }
 }
 
