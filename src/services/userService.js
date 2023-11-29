@@ -45,7 +45,7 @@ async function signIn(res, userSignInRequest) {
   const token = new JwtUtil().encode(user._id);
   res.cookie('token', token, {
     httpOnly: true,
-    secure: false,
+    secure: true,
     maxAge: 2 * 60 * 60 * 1000,
     sameSite: 'none',
   });
