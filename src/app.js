@@ -29,7 +29,7 @@ mongoose
     console.error('MongoDB 연결 실패: ', error);
   });
 
-app.use(cors({ origin: 'http://localhost5173', credentials: true }));
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
