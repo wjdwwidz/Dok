@@ -89,8 +89,20 @@ class MyPageService {
       },
     );
 
+    //내가 쓴 matchingPost 중에 매칭이 완료, 산책 날짜가 지남 , 삭제가 되지 않은 MatchingPost의 id값 가져오기
     const result = await MatchingPost.find({
       user: userId,
+      $expr: {
+        $lt: [
+          {
+            $dateFromString: {
+              dateString: '$walkingDate',
+              format: '%Y-%m-%dT%H:%M:%S.%L',
+            },
+          },
+          currentDate,
+        ],
+      },
       matchingStatus: 'completed',
       deletedAt: null,
     }).select({ _id: 1 });
@@ -114,7 +126,7 @@ class MyPageService {
 
   //내 인증글 불러오기✅
   async getCertificationList(userId) {
-    const myCertificationLists = await Certification.find({
+    const myCertificationLists = await CertificationPost.find({
       user: userId,
     })
       .populate('user')
