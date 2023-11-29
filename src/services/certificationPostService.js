@@ -1,138 +1,303 @@
+const NotFoundError = require('../errors/notFoundError');
 const CertificationPost = require('../models/certificationPost/certificationPost');
-
+const MatchingPost = require('../models/matchingPost/matchingPost');
 class CertificationPostService {
-  // 전체 인증글 조회
-  getCertificationPosts() {
-    const findCertificationPost = CertificationPost.find({})
-      .populate('user')
-      .populate('matchingPost')
-      .sort({ createdAt: -1 }); // 인증글을 createdAt 기준으로 내림차순으로 정렬
-    const getCertificationPosts = findCertificationPost.find({
-      deletedAt: null,
-    });
+  async getCertificationPosts(page, perPage, locationCode, walkingDate) {
+    //인증 검색 할 때마다, 날짜 지난거는 'failed'처리
 
-    return getCertificationPosts;
+    const currentDate = new Date();
+    const nextDay = new Date(walkingDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+
+    await MatchingPost.updateMany(
+      {
+        $expr: {
+          $lt: [
+            {
+              $dateFromString: {
+                dateString: '$walkingDate',
+                format: '%Y-%m-%dT%H:%M:%S.%L',
+              },
+            },
+            currentDate,
+          ],
+        },
+      },
+      {
+        $set: {
+          matchingStatus: 'failed', // 변경하고자 하는 값으로 설정
+        },
+      },
+    );
+
+    //🙄locationCode랑 walkingDate 둘 다 있을 때
+    if (locationCode && walkingDate) {
+      //해당 날짜가 지나지 않고, 'failed'가 아닌 MatchingPost의 값만 불러오기
+
+      const result = await MatchingPost.aggregate([
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $gt: [
+                    {
+                      $dateFromString: {
+                        dateString: '$walkingDate',
+                        format: '%Y-%m-%dT%H:%M:%S.%L',
+                      },
+                    },
+                    new Date(walkingDate),
+                  ],
+                },
+                {
+                  $lt: [
+                    {
+                      $dateFromString: {
+                        dateString: '$walkingDate',
+                        format: '%Y-%m-%dT%H:%M:%S.%L',
+                      },
+                    },
+                    nextDay,
+                  ],
+                },
+              ],
+            },
+            'location.code': {
+              $regex: new RegExp(`${locationCode}`),
+            },
+            deletedAt: null,
+          },
+        },
+        {
+          $project: { _id: 1 },
+        },
+      ]);
+
+      //해당 matchingPost의 id를 가지고 있는 인증글 찾기
+      const foundDocuments = await CertificationPost.find({
+        matchingPost: { $in: result },
+      })
+        .skip(perPage * (page - 1))
+        .limit(perPage)
+        .populate('matchingPost');
+
+      if (!foundDocuments) {
+        throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+      }
+
+      return foundDocuments;
+    }
+
+    //🙄 locationCode가 있고, walkingDate가 없을 때
+    if (locationCode && !walkingDate) {
+      const result = await MatchingPost.aggregate([
+        {
+          $match: {
+            'location.code': {
+              $regex: new RegExp(`${locationCode}`),
+            },
+            deletedAt: null,
+          },
+        },
+        {
+          $project: { _id: 1 },
+        },
+      ]);
+
+      //해당 matchingPost의 id를 가지고 있는 인증글 찾기
+      const foundDocuments = await CertificationPost.find({
+        matchingPost: { $in: result },
+      })
+        .skip(perPage * (page - 1))
+        .limit(perPage)
+        .populate('matchingPost');
+
+      if (!foundDocuments) {
+        throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+      }
+
+      return foundDocuments;
+    }
+
+    //🙄locationCode가 없고, walkingDate가 있을 때
+    if (!locationCode && walkingDate) {
+      //해당 날짜가 지나지 않고, 'failed'가 아닌 MatchingPost의 값만 불러오기
+
+      const result = await MatchingPost.aggregate([
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $gt: [
+                    {
+                      $dateFromString: {
+                        dateString: '$walkingDate',
+                        format: '%Y-%m-%dT%H:%M:%S.%L',
+                      },
+                    },
+                    new Date(walkingDate),
+                  ],
+                },
+                {
+                  $lt: [
+                    {
+                      $dateFromString: {
+                        dateString: '$walkingDate',
+                        format: '%Y-%m-%dT%H:%M:%S.%L',
+                      },
+                    },
+                    nextDay,
+                  ],
+                },
+              ],
+            },
+            deletedAt: null,
+          },
+        },
+        {
+          $project: { _id: 1 },
+        },
+      ]);
+
+      //해당 matchingPost의 id를 가지고 있는 인증글 찾기
+      const foundDocuments = await CertificationPost.find({
+        matchingPost: { $in: result },
+      })
+        .skip(perPage * (page - 1))
+        .limit(perPage)
+        .populate('matchingPost');
+
+      if (!foundDocuments) {
+        throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+      }
+
+      return foundDocuments;
+    }
+
+    //🙄locatonCode와 walkingDate 둘 다 없을 때
+    if (!locationCode && !walkingDate) {
+      //해당 날짜가 지나지 않고, 'failed'가 아닌 MatchingPost의 값만 불러오기
+
+      const result = await MatchingPost.aggregate([
+        {
+          $match: {
+            deletedAt: null,
+          },
+        },
+        {
+          $project: { _id: 1 },
+        },
+      ]);
+
+      //해당 matchingPost의 id를 가지고 있는 인증글 찾기
+      const foundDocuments = await CertificationPost.find({
+        matchingPost: { $in: result },
+      })
+        .skip(perPage * (page - 1))
+        .limit(perPage)
+        .populate('matchingPost');
+
+      if (!foundDocuments) {
+        throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+      }
+
+      return foundDocuments;
+    }
   }
 
   // 상세 인증글 조회
   getCertificationPostDetail(postId) {
     const findCertificationPostDetail = CertificationPost.find({
       _id: postId,
-    }).populate('review');
+      deletedAt: null,
+    })
+      .populate('user')
+      .populate('matchingPost');
+
+    if (!findCertificationPostDetail) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    }
 
     return findCertificationPostDetail;
   }
 
-  // 인증글 생성 (아직 이미지 받아오는 방식이 정해지지 않아서 certificationImg는 작성x)
+  // 인증글 생성
   postCertificationPost(
-    user,
+    userId,
     matchingPost,
+    certificationImg,
     sublocation,
     postText,
-    review,
     deletedAt,
   ) {
     const newCertificationPost = CertificationPost.create({
-      user,
-      matchingPost,
+      user: userId,
+      matchingPost: matchingPost,
+      certificationImg,
       sublocation,
       postText,
-      review,
       deletedAt,
     });
+    if (!newCertificationPost) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    }
 
     return newCertificationPost;
   }
 
-  // 인증글 삭제
-  // deleteCertificationPost(certificationPostId) {
-  //   const removePost = CertificationPost.updateOne(
-  //     {
-  //       _id: certificationPostId,
-  //     },
-  //     {
-  //       deletedAt: Date.now(),
-  //     },
-  //   );
+  // 인증글 수정
+  updateCertificationPost(_id, Data) {
+    const updatePost = CertificationPost.findOneAndUpdate(
+      {
+        _id: _id,
+      },
+      {
+        Data,
+      },
+    );
+    if (!updatePost) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    }
 
-  //   return removePost;
-  // }
+    return updatePost;
+  }
 
   // 리뷰 생성
-  postCertificationPostReview(certificationPostId, reviewText, score) {
-    const newReview = CertificationPost.updateOne(
+  postCertificationPostReview(certificationPostId, review) {
+    const newReview = CertificationPost.findOneAndUpdate(
       {
         _id: certificationPostId,
       },
       {
-        reviewText,
-        score,
+        review,
       },
     );
+    if (!newReview) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    }
 
     return newReview;
   }
 
   // 리뷰 수정
   // 생성 과정과 동일
-  putCertificationPostReview(certificationPostId, reviewText) {
-    const updatedReview = CertificationPost.updateOne(
+  putCertificationPostReview(_id, matchingPost, review) {
+    const updatedReview = CertificationPost.findOneAndUpdate(
       {
-        _id: certificationPostId,
+        matchingPost: _id,
       },
       {
-        reviewText,
-        score,
+        review,
       },
     );
+    if (!updatedReview) {
+      throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
+    }
 
     return updatedReview;
   }
-
-  // 검색기능
-  // 지역 선택
-  locationCertificationPost() {
-    const { location } = req.body;
-
-    const locationCertificationPost = CertificationPost.find({
-      location: location,
-    })
-      .populate('user')
-      .populate('matchingPost')
-      .populate('review');
-    const getCertificationPosts = locationCertificationPost.find({
-      deletedAt: null,
-    });
-
-    return getCertificationPosts;
-  }
-
-  // 날짜 선택
-  dateCertificationPost(createdAt) {
-    const dateCertificationPost = CertificationPost.find({
-      createdAt: createdAt,
-    })
-      .populate('user')
-      .populate('matchingPost');
-    const getCertificationPosts = dateCertificationPost.find({
-      deletedAt: null,
-    });
-
-    return getCertificationPosts;
-  }
-
-  // 오래된순 (기본은 최신순)
-  getCertificationPosts() {
-    const findCertificationPost = CertificationPost.find({})
-      .populate('user')
-      .populate('matchingPost')
-      .sort({ createdAt: 1 }); // 인증글을 createdAt 기준으로 오름차순으로 정렬
-    const getCertificationPosts = findCertificationPost.find({
-      deletedAt: null,
-    });
-
-    return getCertificationPosts;
-  }
 }
 
-module.exports = CertificationPostService;
+module.exports = new CertificationPostService();
