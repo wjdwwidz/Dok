@@ -4,7 +4,6 @@ const User = require('../models/user/user');
 const PasswordEncoder = require('../utils/passwordEncoder');
 const JwtUtil = require('../utils/jwtUtil');
 const falsey = require('falsey');
-const { none } = require('../models/multer');
 
 async function createUser(userCreateRequest) {
   const encryptedPassword = await PasswordEncoder.hash(
@@ -46,10 +45,11 @@ async function signIn(res, userSignInRequest) {
   const token = new JwtUtil().encode(user._id);
   res.cookie('token', token, {
     httpOnly: true,
-    secure: false,
+    secure: true,
     maxAge: 2 * 60 * 60 * 1000,
     sameSite: 'none',
   });
+  res.header('Bearer', ` ${token}`);
   return user;
 }
 
