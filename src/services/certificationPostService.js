@@ -6,6 +6,8 @@ class CertificationPostService {
     //인증 검색 할 때마다, 날짜 지난거는 'failed'처리
 
     const currentDate = new Date();
+    const adjustedDate = new Date(currentDate.getTime() + 9 * 60 * 60 * 1000);
+
     const nextDay = new Date(walkingTime);
     nextDay.setDate(nextDay.getDate() + 1);
 
@@ -13,21 +15,21 @@ class CertificationPostService {
       {
         $and: [
           {
-            matchingStatus: 'progress',
+            matchingStatus: 'process',
           },
           {
             matchingHandler: null,
           },
           {
             $expr: {
-              $lt: [
+              $lte: [
                 {
                   $dateFromString: {
                     dateString: '$walkingDate',
                     format: '%Y-%m-%dT%H:%M:%S.%L',
                   },
                 },
-                currentDate,
+                adjustedDate,
               ],
             },
           },
@@ -84,8 +86,12 @@ class CertificationPostService {
         },
       ]);
 
-      console.log(result);
       //해당 matchingPost의 id를 가지고 있는 인증글 찾기
+
+      const countFoundDocuments = await CertificationPost.find({
+        matchingPost: { $in: result },
+      });
+
       const foundDocuments = await CertificationPost.find({
         matchingPost: { $in: result },
       })
@@ -102,11 +108,12 @@ class CertificationPostService {
           populate: { path: 'userDog' },
         });
 
+      console.log(foundDocuments);
       if (!foundDocuments) {
         throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
       }
 
-      return [foundDocuments.length, foundDocuments];
+      return [countFoundDocuments.length, foundDocuments];
     }
 
     //🙄 locationCode가 있고, walkingDate가 없을 때
@@ -124,9 +131,13 @@ class CertificationPostService {
           $project: { _id: 1 },
         },
       ]);
-      console.log(result);
 
       //해당 matchingPost의 id를 가지고 있는 인증글 찾기
+
+      const countFoundDocuments = await CertificationPost.find({
+        matchingPost: { $in: result },
+      });
+
       const foundDocuments = await CertificationPost.find({
         matchingPost: { $in: result },
       })
@@ -147,7 +158,7 @@ class CertificationPostService {
         throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
       }
 
-      return [foundDocuments.length, foundDocuments];
+      return [countFoundDocuments.length, foundDocuments];
     }
 
     //🙄locationCode가 없고, walkingTime가 있을 때
@@ -191,8 +202,12 @@ class CertificationPostService {
         },
       ]);
 
-      console.log(result);
       //해당 matchingPost의 id를 가지고 있는 인증글 찾기
+
+      const countFoundDocuments = await CertificationPost.find({
+        matchingPost: { $in: result },
+      });
+
       const foundDocuments = await CertificationPost.find({
         matchingPost: { $in: result },
       })
@@ -213,13 +228,11 @@ class CertificationPostService {
         throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
       }
 
-      return [foundDocuments.length, foundDocuments];
+      return [countFoundDocuments.length, foundDocuments];
     }
 
     //🙄locatonCode와 walkingDate 둘 다 없을 때
     if (!locationCode && !walkingTime) {
-      //해당 날짜가 지나지 않고, 'failed'가 아닌 MatchingPost의 값만 불러오기
-
       const result = await MatchingPost.aggregate([
         {
           $match: {
@@ -231,11 +244,15 @@ class CertificationPostService {
         },
       ]);
 
-      console.log(result);
       //해당 matchingPost의 id를 가지고 있는 인증글 찾기
+      const countFoundDocuments = await CertificationPost.find({
+        matchingPost: { $in: result },
+      });
+
       const foundDocuments = await CertificationPost.find({
         matchingPost: { $in: result },
       })
+        .sort({ createdAt: -1 })
         .skip(perPage * (page - 1))
         .limit(perPage)
         .populate('user')
@@ -253,7 +270,7 @@ class CertificationPostService {
         throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
       }
 
-      return [foundDocuments.length, foundDocuments];
+      return [countFoundDocuments.length, foundDocuments];
     }
   }
 
@@ -275,20 +292,18 @@ class CertificationPostService {
 
   // 인증글 생성
   postCertificationPost(
-    userId,
+    _id,
     matchingPost,
     certificationImg,
     sublocation,
     postText,
-    deletedAt,
   ) {
     const newCertificationPost = CertificationPost.create({
-      user: userId,
+      user: _id,
       matchingPost: matchingPost,
       certificationImg,
       sublocation,
       postText,
-      deletedAt,
     });
     if (!newCertificationPost) {
       throw new NotFoundError(`요청받은 리소스를 찾을 수 없습니다`);
@@ -299,6 +314,7 @@ class CertificationPostService {
 
   // 인증글 수정
   updateCertificationPost(
+    _id,
     certificationPostId,
     certificationImg,
     sublocation,
@@ -306,8 +322,8 @@ class CertificationPostService {
   ) {
     const updatePost = CertificationPost.findOneAndUpdate(
       {
-        // _id: _id,
         _id: certificationPostId,
+        user: _id,
       },
       {
         certificationImg,
@@ -324,10 +340,11 @@ class CertificationPostService {
   }
 
   // 리뷰 생성 및 수정
-  postPutCertificationPostReview(certificationPostId, review) {
+  postPutCertificationPostReview(_id, certificationPostId, review) {
     const newReview = CertificationPost.findOneAndUpdate(
       {
-        _id: certificationPostId,
+        user: _id,
+        matchingPost: certificationPostId,
       },
       {
         review,

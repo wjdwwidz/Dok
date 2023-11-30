@@ -39,11 +39,12 @@ const getCertificationPostDetails = async (req, res, next) => {
 // 인증글 생성
 const postCertificationPosts = async (req, res, next) => {
   try {
-    const { userId, matchingPost } = req.params;
+    const _id = req._id;
+    const { matchingPost } = req.params;
     const { certificationImg, sublocation, postText } = req.body;
     const newCertificationPost =
       await CertificationPostService.postCertificationPost(
-        userId,
+        _id,
         matchingPost,
         certificationImg,
         sublocation,
@@ -60,11 +61,11 @@ const postCertificationPosts = async (req, res, next) => {
 // 인증글 수정
 const putCertificationPosts = async (req, res, next) => {
   try {
-    // const _id = req._id;
+    const _id = req._id;
     const { certificationPostId } = req.params;
     const { certificationImg, sublocation, postText, review } = req.body;
     const newPost = await CertificationPostService.updateCertificationPost(
-      // _id,
+      _id,
       certificationPostId,
       certificationImg,
       sublocation,
@@ -81,12 +82,12 @@ const putCertificationPosts = async (req, res, next) => {
 // 리뷰 생성 및수정
 const postPutCertificationPostReviews = async (req, res, next) => {
   try {
-    // const _id = req._id;
+    const _id = req._id;
     const { certificationPostId } = req.params;
     const { review } = req.body;
     const newReview =
       await CertificationPostService.postPutCertificationPostReview(
-        // _id,
+        _id,
         certificationPostId,
         review,
       );
