@@ -4,19 +4,26 @@ const Img = require('../models/image/image');
 
 const uploadImage = async (req, res, next) => {
   try {
-    const file = req.file;
-    console.log('File: ', file);
+    const files = req.files;
 
-    if (!file) {
+    if (!files || files.length === 0) {
       throw new BadRequestError('No file uploaded.');
     }
+    const savedImages = [];
 
-    const imageUrl = await uploadService.uploadImage(file);
+    for (const file of files) {
+      const imageUrl = await uploadService.uploadImage(file);
 
-    if (!imageUrl) throw new InternalServerError('Error uploading image.');
-    const newImage = new Img({ imageURL: imageUrl });
-    const savedImage = await newImage.save();
-    return res.status(200).send(savedImage);
+      if (!imageUrl) {
+        throw new InternalServerError('Error uploading image.');
+      }
+
+      const newImage = new Img({ imageURL: imageUrl });
+      const savedImage = await newImage.save();
+      savedImages.push(savedImage);
+    }
+
+    return res.status(200).send(savedImages);
   } catch (err) {
     console.error(err);
     next(err);
