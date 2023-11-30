@@ -18,6 +18,7 @@ async function createUser(userCreateRequest) {
     nickname: userCreateRequest.getNickname(),
     phoneNumber: userCreateRequest.getPhoneNumber(),
     address: userCreateRequest.getAddress(),
+    userImg: userCreateRequest.getUserImg(),
     introduce: userCreateRequest.getIntroduce(),
     isCertificated: userCreateRequest.getIsCertificated(),
   });
@@ -46,11 +47,33 @@ async function signIn(res, userSignInRequest) {
   res.cookie('token', token, {
     httpOnly: true,
     secure: true,
-    maxAge: 2 * 60 * 60 * 1000,
+    maxAge: 24 * 60 * 60 * 1000,
     sameSite: 'none',
   });
   res.header('Bearer', ` ${token}`);
   return user;
+}
+
+async function signOut(res) {
+  res.clearCookie('token');
+  return res.status(200).json({ message: '로그아웃 되었습니다.' });
+}
+
+async function deleteUser(_id, userDeleteRequest) {
+  try {
+    const user = await User.findById(_id).exec();
+    if (!user) {
+      throw new NotFoundError(`존재하지 않는 아이디입니다. inputId: ${_id}`);
+    }
+    if (!userDeleteRequest.getDeletedAt()) {
+      user.deletedAt = new Date();
+      await user.save();
+    }
+    return user;
+  } catch (error) {
+    console.error('Error deleting user:', error.message);
+    throw error;
+  }
 }
 
 async function editUserInfo(_id, userUpdateRequest) {
@@ -60,6 +83,7 @@ async function editUserInfo(_id, userUpdateRequest) {
 
   const update = {
     name: userUpdateRequest.getName(),
+    userImg: userUpdateRequest.getUserImg(),
     nickname: userUpdateRequest.getNickname(),
     phoneNumber: userUpdateRequest.getPhoneNumber(),
     address: userUpdateRequest.getAddress(),
@@ -88,4 +112,12 @@ async function getUserById(_id) {
   return user;
 }
 
-module.exports = { createUser, signIn, editUserInfo, getUser, getUserById };
+module.exports = {
+  createUser,
+  signIn,
+  editUserInfo,
+  getUser,
+  getUserById,
+  signOut,
+  deleteUser,
+};
