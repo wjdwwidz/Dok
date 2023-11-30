@@ -6,12 +6,7 @@ class CertificationPostService {
     //인증 검색 할 때마다, 날짜 지난거는 'failed'처리
 
     const currentDate = new Date();
-
-    // 9시간을 더한 후 ISO 형식으로 변환 (한국 시간대와 9시간 차이남)
     const adjustedDate = new Date(currentDate.getTime() + 9 * 60 * 60 * 1000);
-    const isoDateTime = adjustedDate.toISOString();
-
-    console.log(isoDateTime);
 
     const nextDay = new Date(walkingTime);
     nextDay.setDate(nextDay.getDate() + 1);
@@ -20,21 +15,21 @@ class CertificationPostService {
       {
         $and: [
           {
-            matchingStatus: 'progress',
+            matchingStatus: 'process',
           },
           {
             matchingHandler: null,
           },
           {
             $expr: {
-              $lt: [
+              $lte: [
                 {
                   $dateFromString: {
                     dateString: '$walkingDate',
                     format: '%Y-%m-%dT%H:%M:%S.%L',
                   },
                 },
-                isoDateTime,
+                adjustedDate,
               ],
             },
           },
