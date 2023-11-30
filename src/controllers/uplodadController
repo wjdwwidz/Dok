@@ -2,7 +2,37 @@ const { img } = require('../models/image/image');
 
 async function post(req, res) {
   img.imageURL = req.file.location;
+  const uploadedFileName = req.file.originalname;
+
   await img.save();
   res.status(200).json({ img: req.file.location });
 }
-module.exports = { post };
+
+async function urlToString(req, res) {
+  const key = `uploads/${uploadedFileName}`;
+  const imageBinaryData = fs.readFileSync(imageFilePath);
+
+  const params = {
+    Bucket: 'dokawsbucket', // 사용 중인 S3 버킷 이름으로 교체
+    Key: key, // 이미지가 저장될 경로 및 파일 이름 지정
+    Body: imageBinaryData, // 이미지 데이터 또는 스트림 등
+    ACL: 'public-read', // 업로드된 객체를 공개 읽기로 설정
+  };
+
+  s3Client
+    .send(putObjectCommand)
+    .then((data) => {
+      // 업로드된 이미지의 공개 URL을 생성합니다.
+      const publicUrl = `https://${params.Bucket}.s3.amazonaws.com/${params.Key}`;
+      console.log('Object uploaded:', data);
+      console.log('Public URL:', publicUrl);
+      // 공개 URL을 반환하거나 다른 작업 수행
+    })
+    .catch((error) => {
+      console.error('Error uploading object:', error);
+      // 에러 처리 또는 다른 작업 수행
+    });
+
+  res.status(200).json({ img: req.file.location });
+}
+module.exports = { post, urlToString };
