@@ -10,6 +10,7 @@ const uploadImage = async (file) => {
       Body: file.buffer,
       ContentType: file.mimetype,
     };
+    //console.log('s3 through');
 
     s3.upload(params, (err, data) => {
       if (err) {

@@ -1,7 +1,7 @@
 const { BadRequestError } = require('../errors/badReqestError');
 const uploadService = require('../services/uploadService');
-const Img = require('../models/image/image');
-const User = require('../models/user/user');
+// const Img = require('../models/image/image');
+// const User = require('../models/user/user');
 
 const uploadImage = async (req, res, next) => {
   try {
