@@ -2,7 +2,7 @@
 
 ![image](https://github.com/pado0711/DokProject-backend/assets/109504714/e421edf2-e741-4445-8b36-b9eaeb985b2c)
 
-> **Find Best Local Dog Walker!** > <br/> Dok는 반려동물 산책 서비스를 제공하는 반려인들의 커뮤니티 입니다.
+> **Find Best Local Dog Walker!** <br/> Dok는 반려동물 산책 서비스를 제공하는 반려인들의 커뮤니티 입니다.
 
 ## 서비스 소개
 
