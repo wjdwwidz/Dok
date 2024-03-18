@@ -1,7 +1,9 @@
-class BadRequestError extends Error {
+const CustomError = require('./customError.js');
+
+class BadRequestError extends CustomError {
   statusCode = 400;
   constructor(message) {
-    super(message);
+    super(statusCode, message);
     this.name = 'BadRequestError';
 
     if (Error.captureStackTrace) {

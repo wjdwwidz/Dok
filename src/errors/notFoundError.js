@@ -1,7 +1,9 @@
-class NotFoundError extends Error {
+const CustomError = require('./customError.js');
+
+class NotFoundError extends CustomError {
   statusCode = 404;
   constructor(message) {
-    super(message);
+    super(statusCode, message);
     this.name = 'NotFoundError';
 
     if (Error.captureStackTrace) {

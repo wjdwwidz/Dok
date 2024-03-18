@@ -1,7 +1,9 @@
-class UnauthenticationError extends Error {
+const CustomError = require('./customError.js');
+
+class UnauthenticationError extends CustomError {
   statusCode = 401;
   constructor(message) {
-    super(message);
+    super(statusCode, message);
     this.name = 'UnauthenticationError';
 
     if (Error.captureStackTrace) {
