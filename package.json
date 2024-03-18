@@ -6,7 +6,7 @@
     "dev": "nodemon src/app.js",
     "production": "node src/app.js",
     "start": "SECURE=true node src/app.js",
-    "start-gendoc": "node swagger.js"
+    "predev": "node ./swagger.js"
   },
   "keywords": [
     "swagger",

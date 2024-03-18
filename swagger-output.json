@@ -7,12 +7,6 @@
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "tags": [
-    {
-      "name": "User",
-      "description": "Endpoints"
-    }
-  ],
   "schemes": [
     "http",
     "https"
@@ -32,11 +26,8 @@
     "application/json"
   ],
   "paths": {
-    "/ping": {
+    "/api": {
       "get": {
-        "tags": [
-          "ping-pong"
-        ],
         "description": "",
         "responses": {
           "200": {
@@ -45,17 +36,234 @@
         }
       }
     },
-    "/tasks/{task_id}": {
+    "/api/main/": {
       "get": {
-        "description": "",
+        "tags": [
+          "main"
+        ],
+        "description": "메인 페이지의 전체 contents를 가져옵니다.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/users/": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "description": "유저 정보를 불러옵니다.",
         "parameters": [
           {
-            "name": "task_id",
-            "in": "path",
-            "required": true,
+            "name": "userId",
+            "in": "query",
             "type": "string"
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/users/myInfo": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "description": "내 정보를 불러옵니다.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "user"
+        ],
+        "description": "내 정보를 수정합니다.",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user"
+        ],
+        "description": "회원탈퇴를 합니다.",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/users/myDog": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "description": "내 강아지 정보를 불러옵니다.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "description": "강아지 정보를 추가합니다.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "dogName": {
+                  "example": "any"
+                },
+                "dogImg": {
+                  "example": "any"
+                },
+                "birth": {
+                  "example": "any"
+                },
+                "dogType": {
+                  "example": "any"
+                },
+                "gender": {
+                  "example": "any"
+                },
+                "personality": {
+                  "example": "any"
+                },
+                "note": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/users/signUp": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "description": "회원가입을 합니다.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "name": {
+                  "example": "any"
+                },
+                "nickname": {
+                  "example": "any"
+                },
+                "phoneNumber": {
+                  "example": "any"
+                },
+                "address": {
+                  "example": "any"
+                },
+                "introduce": {
+                  "example": "any"
+                },
+                "isCertificated": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/api/users/signIn": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "description": "로그인을 합니다.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/api/users/signOut": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "description": "로그아웃을 합니다.",
         "responses": {
           "default": {
             "description": ""
@@ -63,12 +271,872 @@
         }
       }
     },
-    "/tasks/": {
-      "post": {
-        "description": "",
+    "/api/myPage/myMatchingPosts": {
+      "get": {
+        "tags": [
+          "myPage"
+        ],
+        "description": "내가 쓴 매칭글을 가져옵니다.",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/myPage/myCertification": {
+      "get": {
+        "tags": [
+          "myPage"
+        ],
+        "description": "매칭 완료된 매칭 포스트 중에서, 인증글을 작성하지 않은 목록을 가져옵니다.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/myPage/myCertificationLists": {
+      "get": {
+        "tags": [
+          "myPage"
+        ],
+        "description": "내가 작성한 인증글 목록을 가져옵니다.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/matchingPostLists/": {
+      "get": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "매칭 메인 페이지의 전체 매칭 글을 가져옵니다.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "locationCode",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "walkingTime",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostLists/{matchingPostId}": {
+      "get": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "상세 게시글을 불러옵니다.",
+        "parameters": [
+          {
+            "name": "matchingPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostLists/comment/{matchingPostId}": {
+      "get": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "댓글을 불러옵니다.",
+        "parameters": [
+          {
+            "name": "matchingPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostLists/comment": {
+      "post": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "댓글을 작성합니다.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "matchingPostId": {
+                  "example": "any"
+                },
+                "user": {
+                  "example": "any"
+                },
+                "comment": {
+                  "example": "any"
+                },
+                "parentCommentId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostLists/comment/{commentId}": {
+      "put": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "댓글을 수정합니다.",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "댓글을 삭제합니다.",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostLists/handler/{matchingPostId}": {
+      "get": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "산책 요청 리스트를 불러옵니다.",
+        "parameters": [
+          {
+            "name": "matchingPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostLists/handler/{user}/{matchingPostId}": {
+      "post": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "산책 요청을 합니다.",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "matchingPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostLists/handler/{matchingPostId}/{handlerRequestId}": {
+      "put": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "산책 요청을 확정합니다.",
+        "parameters": [
+          {
+            "name": "matchingPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "handlerRequestId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostDetail/": {
+      "get": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "매칭 메인 페이지의 전체 매칭 글을 가져옵니다.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "locationCode",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "walkingTime",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostDetail/{matchingPostId}": {
+      "get": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "상세 게시글을 불러옵니다.",
+        "parameters": [
+          {
+            "name": "matchingPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostDetail/comment/{matchingPostId}": {
+      "get": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "댓글을 불러옵니다.",
+        "parameters": [
+          {
+            "name": "matchingPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostDetail/comment": {
+      "post": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "댓글을 작성합니다.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "matchingPostId": {
+                  "example": "any"
+                },
+                "user": {
+                  "example": "any"
+                },
+                "comment": {
+                  "example": "any"
+                },
+                "parentCommentId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostDetail/comment/{commentId}": {
+      "put": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "댓글을 수정합니다.",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "댓글을 삭제합니다.",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostDetail/handler/{matchingPostId}": {
+      "get": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "산책 요청 리스트를 불러옵니다.",
+        "parameters": [
+          {
+            "name": "matchingPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostDetail/handler/{user}/{matchingPostId}": {
+      "post": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "산책 요청을 합니다.",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "matchingPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingPostDetail/handler/{matchingPostId}/{handlerRequestId}": {
+      "put": {
+        "tags": [
+          "matchingPost"
+        ],
+        "description": "산책 요청을 확정합니다.",
+        "parameters": [
+          {
+            "name": "matchingPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "handlerRequestId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/matchingRequestRouter/doginformation/{userId}": {
+      "get": {
+        "tags": [
+          "matchingRequest"
+        ],
+        "description": "강아지 정보를 불러옵니다.",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/matchingRequestRouter/matchingRequest": {
+      "post": {
+        "tags": [
+          "matchingRequest"
+        ],
+        "description": "매칭글을 신청합니다.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userDog": {
+                  "example": "any"
+                },
+                "price": {
+                  "example": "any"
+                },
+                "location": {
+                  "example": "any"
+                },
+                "locationDetail": {
+                  "example": "any"
+                },
+                "walkingDate": {
+                  "example": "any"
+                },
+                "walkingDuration": {
+                  "example": "any"
+                },
+                "requestText": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/matchingRequestRouter/newMatchingRequest/{matchingPostId}": {
+      "put": {
+        "tags": [
+          "matchingRequest"
+        ],
+        "description": "매칭글을 수정합니다.",
+        "parameters": [
+          {
+            "name": "matchingPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "price": {
+                  "example": "any"
+                },
+                "location": {
+                  "example": "any"
+                },
+                "locationDetail": {
+                  "example": "any"
+                },
+                "walkingDate": {
+                  "example": "any"
+                },
+                "walkingDuration": {
+                  "example": "any"
+                },
+                "requestText": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/matchingRequestRouter/noMatchingRequest/{matchingPostId}": {
+      "put": {
+        "tags": [
+          "matchingRequest"
+        ],
+        "description": "매칭글을 삭제합니다.",
+        "parameters": [
+          {
+            "name": "matchingPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/certificationRouter/newCertificationPost/{matchingPost}": {
+      "post": {
+        "tags": [
+          "certification"
+        ],
+        "description": "인증글을 생성합니다.",
+        "parameters": [
+          {
+            "name": "matchingPost",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "certificationImg": {
+                  "example": "any"
+                },
+                "sublocation": {
+                  "example": "any"
+                },
+                "postText": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/certificationRouter/allCertificationPost": {
+      "get": {
+        "tags": [
+          "certification"
+        ],
+        "description": "전체 인증글을 조회합니다.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "locationCode",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "walkingTime",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/certificationRouter/certificationPostDetails/{postId}": {
+      "get": {
+        "tags": [
+          "certification"
+        ],
+        "description": "상세 인증글을 조회합니다.",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/certificationRouter/certificationPost/{certificationPostId}": {
+      "put": {
+        "tags": [
+          "certification"
+        ],
+        "description": "인증글을 수정합니다.",
+        "parameters": [
+          {
+            "name": "certificationPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "certificationImg": {
+                  "example": "any"
+                },
+                "sublocation": {
+                  "example": "any"
+                },
+                "postText": {
+                  "example": "any"
+                },
+                "review": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/certificationRouter/newCertificationPostReview/{certificationPostId}": {
+      "put": {
+        "tags": [
+          "certification"
+        ],
+        "description": "리뷰를 생성 및 수정합니다.",
+        "parameters": [
+          {
+            "name": "certificationPostId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "review": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/upload/image": {
+      "post": {
+        "tags": [
+          "upload"
+        ],
+        "description": "이미지를 업로드합니다.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }

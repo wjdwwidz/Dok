@@ -8,6 +8,8 @@ const router = Router();
 
 router.post(
   '/image',
+  // #swagger.tags = ['upload'];
+  // #swagger.description = '이미지를 업로드합니다.'
   jwtMiddleware.authenticateToken,
   upload.array('image', 6),
   uploadImage,
